@@ -26,6 +26,11 @@ class StartFragment : Fragment() {
         binding.buttonList.setOnClickListener {
             (activity as MainActivity).navController.navigate(R.id.action_startFragment_to_mainFragment)
         }
+
+        binding.buttonOrders.setOnClickListener {
+            (activity as MainActivity).navController.navigate(R.id.action_startFragment_to_ordersFragment)
+        }
+
         return binding.root
     }
 

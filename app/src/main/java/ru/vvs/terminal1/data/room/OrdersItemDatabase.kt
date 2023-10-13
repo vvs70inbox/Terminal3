@@ -19,7 +19,7 @@ abstract class OrdersItemDatabase: RoomDatabase() {
         fun getInstance(context: Context): OrdersItemDatabase {
             return  if (database == null) {
                 database = Room
-                    .databaseBuilder(context, OrdersItemDatabase::class.java, "db")
+                    .databaseBuilder(context, OrdersItemDatabase::class.java, "db_items")
                     .build()
                 database as OrdersItemDatabase
             } else {

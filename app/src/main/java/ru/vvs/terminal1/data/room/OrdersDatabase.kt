@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.AutoMigrationSpec
 import ru.vvs.terminal1.data.room.dao.OrdersDao
 import ru.vvs.terminal1.model.Order
 
@@ -19,7 +20,7 @@ abstract class OrdersDatabase: RoomDatabase() {
         fun getInstance(context: Context): OrdersDatabase {
             return  if (database == null) {
                 database = Room
-                    .databaseBuilder(context, OrdersDatabase::class.java, "db")
+                    .databaseBuilder(context, OrdersDatabase::class.java, "db_orders")
                     .build()
                 database as OrdersDatabase
             } else {

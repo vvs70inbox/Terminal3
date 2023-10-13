@@ -43,7 +43,27 @@ class OrdersFragment : Fragment() {
         adapter = OrdersAdapter()
         recyclerView.adapter = adapter
 
+        viewModel.isProgress.observe(viewLifecycleOwner) { bool ->
+            when(bool) {
+                true -> {
+                    binding.progressBarOrders.visibility = View.VISIBLE
+                    //binding.fabOrders.visibility = View.INVISIBLE
 
+                }
+                else -> {
+                    binding.progressBarOrders.visibility = View.GONE
+                    //binding.fabOrders.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        if (viewModel.myOrdersList.value == null) {
+            viewModel.getOrders(false)
+        }
+
+        viewModel.myOrdersList.observe(viewLifecycleOwner) { list ->
+            adapter.setList(list)
+        }
 
     }
 

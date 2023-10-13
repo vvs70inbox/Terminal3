@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.vvs.terminal1.R
+import ru.vvs.terminal1.model.CartItem
 import ru.vvs.terminal1.model.Order
 
 class OrdersAdapter: RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder>() {
@@ -30,4 +31,10 @@ class OrdersAdapter: RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder>() {
         holder.itemView.findViewById<TextView>(R.id.item_products).text = listMain[position].products.toString()
         holder.itemView.findViewById<TextView>(R.id.item_amount).text = listMain[position].amount.toString()
     }
+
+    fun setList(list: List<Order>) {
+        listMain = list
+        notifyDataSetChanged()
+    }
+
 }
