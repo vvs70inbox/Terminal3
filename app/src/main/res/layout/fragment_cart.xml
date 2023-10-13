@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    android:fillViewport="true"
+    tools:context=".screens.cartFragment.CartFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp">
+
+        <TextView
+            android:id="@+id/cartHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/hello_blank_fragment"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cartGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Group"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cartHeader" />
+        <TextView
+            android:id="@+id/cartName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Product"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cartGroup" />
+
+        <TextView
+            android:id="@+id/cartCharacter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Character"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cartName" />
+
+        <TextView
+            android:id="@+id/cartBarcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Barcode"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cartCharacter" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dataContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cartBarcode">
+
+            <TextView
+                android:id="@+id/cartTextQuantity"
+                style="@style/ProfileHintTextView"
+                android:text="На СЦ"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/cartTextProduction"
+                style="@style/ProfileHintTextView"
+                android:text="На производстве"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintTop_toBottomOf="@id/cartTextQuantity"/>
+
+            <TextView
+                android:id="@+id/cartTextReserve"
+                style="@style/ProfileHintTextView"
+                android:text="В резерве"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintTop_toBottomOf="@id/cartTextProduction"/>
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/startBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="end"
+                app:constraint_referenced_ids="cartTextQuantity,cartTextProduction,cartTextReserve"/>
+
+            <TextView
+                android:id="@+id/cartQuantity"
+                style="@style/ProfileValueTextView"
+                tools:text="Quantity"
+                android:gravity="end"
+                app:layout_constraintStart_toStartOf="@id/startBarrier"
+                app:layout_constraintTop_toTopOf="@id/cartTextQuantity"/>
+
+            <TextView
+                android:id="@+id/cartProduction"
+                style="@style/ProfileValueTextView"
+                tools:text="Production"
+                android:gravity="end"
+                app:layout_constraintStart_toStartOf="@id/startBarrier"
+                app:layout_constraintTop_toTopOf="@id/cartTextProduction"/>
+
+            <TextView
+                android:id="@+id/cartReserve"
+                style="@style/ProfileValueTextView"
+                tools:text="Reserve"
+                android:gravity="end"
+                app:layout_constraintStart_toStartOf="@id/startBarrier"
+                app:layout_constraintTop_toTopOf="@id/cartTextReserve"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/cartTextPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Цена"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/dataContainer"
+            app:layout_constraintTop_toBottomOf="@+id/dataContainer" />
+
+        <TextView
+            android:id="@+id/cartPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Price"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/dataContainer"
+            app:layout_constraintTop_toBottomOf="@+id/dataContainer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
