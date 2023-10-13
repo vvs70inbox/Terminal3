@@ -47,12 +47,12 @@ class OrdersFragment : Fragment() {
             when(bool) {
                 true -> {
                     binding.progressBarOrders.visibility = View.VISIBLE
-                    //binding.fabOrders.visibility = View.INVISIBLE
+                    binding.fabOrders.visibility = View.INVISIBLE
 
                 }
                 else -> {
                     binding.progressBarOrders.visibility = View.GONE
-                    //binding.fabOrders.visibility = View.VISIBLE
+                    binding.fabOrders.visibility = View.VISIBLE
                 }
             }
         }
