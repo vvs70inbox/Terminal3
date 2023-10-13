@@ -14,7 +14,7 @@ interface CartsDao: BaseDao<CartItem> {
     suspend fun insertAll(carts: List<CartItem>)
 
     @Query("DELETE FROM carts_table")
-    fun clearTable()
+    suspend fun clearTable()
 
     @Query("SELECT * from carts_table")
     suspend fun getAllCarts(): List<CartItem>
