@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.vvs.terminal1.R
 import ru.vvs.terminal1.model.CartItem
 import ru.vvs.terminal1.model.Order
+import ru.vvs.terminal1.screens.mainFragment.MainAdapter
+import ru.vvs.terminal1.screens.mainFragment.MainFragment
 
 class OrdersAdapter: RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder>() {
 
@@ -35,6 +37,17 @@ class OrdersAdapter: RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder>() {
     fun setList(list: List<Order>) {
         listMain = list
         notifyDataSetChanged()
+    }
+
+    override fun onViewAttachedToWindow(holder: OrdersAdapter.OrdersViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.itemView.setOnClickListener {
+            OrdersFragment.clickOrder(listMain[holder.adapterPosition])
+        }
+    }
+
+    override fun onViewDetachedFromWindow(holder: OrdersAdapter.OrdersViewHolder) {
+        holder.itemView.setOnClickListener(null)
     }
 
 }

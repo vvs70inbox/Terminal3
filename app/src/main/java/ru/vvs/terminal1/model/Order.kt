@@ -2,6 +2,7 @@ package ru.vvs.terminal1.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "orders_table")
 data class Order(
@@ -13,4 +14,4 @@ data class Order(
     val positions: Int,
     val products: Int,
     val amount: Int
-)
+) : Serializable

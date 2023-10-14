@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.vvs.terminal1.MAIN
+import ru.vvs.terminal1.R
 import ru.vvs.terminal1.databinding.FragmentOrdersBinding
+import ru.vvs.terminal1.model.CartItem
+import ru.vvs.terminal1.model.Order
 import ru.vvs.terminal1.screens.mainFragment.MainAdapter
 import ru.vvs.terminal1.screens.mainFragment.MainViewModel
 
@@ -70,6 +73,14 @@ class OrdersFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         mBinding = null
+    }
+
+    companion object {
+        fun clickOrder(order: Order) {
+            val bundle = Bundle()
+            bundle.putSerializable("order", order)
+            MAIN.navController.navigate(R.id.action_ordersFragment_to_orderFragment, bundle)
+        }
     }
 
 }
