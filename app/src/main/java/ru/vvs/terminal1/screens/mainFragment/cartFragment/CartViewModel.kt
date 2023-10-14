@@ -1,4 +1,4 @@
-package ru.vvs.terminal1.screens.cartFragment
+package ru.vvs.terminal1.screens.mainFragment.cartFragment
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

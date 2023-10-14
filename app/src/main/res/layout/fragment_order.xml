@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context=".screens.ordersFragment.orderFragment.OrderFragment">
+
+
+    <TextView
+        android:id="@+id/order_name_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Заказ покупателя"
+        android:textSize="24dp"
+        android:padding="16dp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/order_number_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Номер"
+        android:textSize="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/order_name_title" />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/order_number"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:hint="Номер заказа"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@+id/order_number_title"
+        app:layout_constraintTop_toBottomOf="@+id/order_name_title" />
+    <TextView
+        android:id="@+id/order_date_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="от"
+        android:textSize="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@+id/order_number"
+        app:layout_constraintTop_toBottomOf="@id/order_name_title" />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/order_date"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:hint="Номер заказа"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@+id/order_date_title"
+        app:layout_constraintTop_toBottomOf="@+id/order_name_title" />
+
+    <TextView
+        android:id="@+id/order_note_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Примечание"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/order_number" />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/order_note"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:hint="Примечание"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@+id/order_note_title"
+        app:layout_constraintTop_toBottomOf="@+id/order_number" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_order_layout"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/order_note" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

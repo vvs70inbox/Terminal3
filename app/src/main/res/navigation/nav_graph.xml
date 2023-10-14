@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
-        android:name="ru.vvs.terminal1.screens.cartFragment.CartFragment"
+        android:name="ru.vvs.terminal1.screens.mainFragment.cartFragment.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" >
         <action
