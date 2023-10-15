@@ -1,4 +1,8 @@
 package ru.vvs.terminal1.screens.ordersFragment.orderFragment
 
-class OrderViewModel {
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+
+class OrderViewModel(application: Application): AndroidViewModel(application) {
+
 }

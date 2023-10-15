@@ -5,12 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import ru.vvs.terminal1.data.room.dao.CartsDao
+import ru.vvs.terminal1.data.room.dao.OrdersDao
+import ru.vvs.terminal1.data.room.dao.OrdersItemDao
 import ru.vvs.terminal1.model.CartItem
 
-@Database(entities = [CartItem::class], version = 1)
+@Database(entities = [CartItem::class], version = 2)
 abstract class CartsDatabase: RoomDatabase() {
 
     abstract fun getCartsDao(): CartsDao
+    abstract fun getOrdersDao(): OrdersDao
+    abstract fun getAllOrdersItem(): OrdersItemDao
 
     companion object {
         @Volatile
@@ -20,6 +24,7 @@ abstract class CartsDatabase: RoomDatabase() {
             return  if (database == null) {
                 database = Room
                     .databaseBuilder(context, CartsDatabase::class.java, "db")
+                    .fallbackToDestructiveMigration()
                     .build()
                 database as CartsDatabase
             } else {

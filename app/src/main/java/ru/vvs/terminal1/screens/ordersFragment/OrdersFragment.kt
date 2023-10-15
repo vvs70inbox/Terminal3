@@ -24,7 +24,6 @@ class OrdersFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: OrdersAdapter
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,6 +65,10 @@ class OrdersFragment : Fragment() {
 
         viewModel.myOrdersList.observe(viewLifecycleOwner) { list ->
             adapter.setList(list)
+        }
+
+        binding.fabOrders.setOnClickListener {
+            
         }
 
     }
