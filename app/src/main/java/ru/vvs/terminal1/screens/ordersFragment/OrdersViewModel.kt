@@ -8,8 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.vvs.terminal1.data.OrdersRepository
-import ru.vvs.terminal1.data.room.OrdersDatabase
-import ru.vvs.terminal1.model.CartItem
+import ru.vvs.terminal1.data.room.CartsDatabase
 import ru.vvs.terminal1.model.Order
 
 class OrdersViewModel(application: Application): AndroidViewModel(application) {
@@ -25,7 +24,7 @@ class OrdersViewModel(application: Application): AndroidViewModel(application) {
     var order: MutableLiveData<Order> = MutableLiveData()
 
     init {
-        val ordersDao = OrdersDatabase.getInstance(application).getOrdersDao()
+        val ordersDao = CartsDatabase.getInstance(application).getOrdersDao()
         repository = OrdersRepository(ordersDao)
     }
 
@@ -34,6 +33,12 @@ class OrdersViewModel(application: Application): AndroidViewModel(application) {
             _isProgress.postValue(true)
             _myOrdersList.postValue(repository.getOrders(newList))
             _isProgress.postValue(false)
+        }
+    }
+
+    fun newOrder() {
+        viewModelScope.launch(Dispatchers.IO) {
+            order.postValue(repository.newOrder())
         }
     }
 

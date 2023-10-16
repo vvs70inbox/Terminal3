@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.vvs.terminal1.MAIN
-import ru.vvs.terminal1.R
 import ru.vvs.terminal1.databinding.FragmentOrderBinding
-import ru.vvs.terminal1.databinding.FragmentOrdersBinding
+import ru.vvs.terminal1.model.Order
 import ru.vvs.terminal1.screens.ordersFragment.OrdersAdapter
-import ru.vvs.terminal1.screens.ordersFragment.OrdersViewModel
 
 class OrderFragment : Fragment() {
 
@@ -23,11 +21,16 @@ class OrderFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: OrdersAdapter
 
+    lateinit var currentOrder: Order
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         mBinding = FragmentOrderBinding.inflate(layoutInflater, container, false)
+
+        currentOrder = arguments?.getSerializable("order") as Order
+
         return binding.root
     }
 
@@ -39,6 +42,14 @@ class OrderFragment : Fragment() {
     private fun init() {
         MAIN.actionBar.title = "Работа с заказом"
         viewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
+
+        binding.orderNumber.text = currentOrder.number
+        binding.orderDate.text = currentOrder.date
+        binding.orderNote.text = currentOrder.name
+
+        viewModel.getItems(currentOrder.id)
+
+
     }
 
 

@@ -11,4 +11,7 @@ interface OrdersDao: BaseDao<Order> {
     @Query("SELECT * from orders_table")
     suspend fun getAllOrders(): List<Order>
 
+    @Query("SELECT COUNT(id) from orders_table")
+    suspend fun getCount(): Int
+
 }

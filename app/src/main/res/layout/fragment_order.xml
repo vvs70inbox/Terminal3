@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/order_name_title"
+        android:id="@+id/orderNameTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -24,65 +24,69 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/order_number_title"
+        android:id="@+id/orderNumberTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Номер"
         android:textSize="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/order_name_title" />
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/order_number"
+        app:layout_constraintTop_toBottomOf="@id/orderNameTitle" />
+    <TextView
+        android:id="@+id/orderNumber"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:hint="Номер заказа"
+        android:text="Номер заказа"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@+id/order_number_title"
-        app:layout_constraintTop_toBottomOf="@+id/order_name_title" />
+        app:layout_constraintStart_toEndOf="@+id/orderNumberTitle"
+        app:layout_constraintTop_toBottomOf="@+id/orderNameTitle" />
     <TextView
-        android:id="@+id/order_date_title"
+        android:id="@+id/orderDateTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="от"
         android:textSize="16dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@+id/order_number"
-        app:layout_constraintTop_toBottomOf="@id/order_name_title" />
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/order_date"
+        app:layout_constraintStart_toEndOf="@+id/orderNumber"
+        app:layout_constraintTop_toBottomOf="@id/orderNameTitle" />
+    <TextView
+        android:id="@+id/orderDate"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:hint="Номер заказа"
+        android:text="Номер заказа"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@+id/order_date_title"
-        app:layout_constraintTop_toBottomOf="@+id/order_name_title" />
+        app:layout_constraintStart_toEndOf="@+id/orderDateTitle"
+        app:layout_constraintTop_toBottomOf="@+id/orderNameTitle" />
 
     <TextView
-        android:id="@+id/order_note_title"
+        android:id="@+id/orderNoteTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Примечание"
         android:textSize="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/order_number" />
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/order_note"
+        app:layout_constraintTop_toBottomOf="@id/orderNumber" />
+    <TextView
+        android:id="@+id/orderNote"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:hint="Примечание"
+        android:text="Примечание"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@+id/order_note_title"
-        app:layout_constraintTop_toBottomOf="@+id/order_number" />
+        app:layout_constraintStart_toEndOf="@+id/orderNoteTitle"
+        app:layout_constraintTop_toBottomOf="@+id/orderNumber" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itemsOrderLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/item_order_layout"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_note" />
+        app:layout_constraintTop_toBottomOf="@+id/orderNote" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

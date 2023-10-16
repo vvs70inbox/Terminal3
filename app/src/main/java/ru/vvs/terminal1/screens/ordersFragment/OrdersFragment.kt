@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.vvs.terminal1.MAIN
@@ -13,6 +14,7 @@ import ru.vvs.terminal1.databinding.FragmentOrdersBinding
 import ru.vvs.terminal1.model.CartItem
 import ru.vvs.terminal1.model.Order
 import ru.vvs.terminal1.screens.mainFragment.MainAdapter
+import ru.vvs.terminal1.screens.mainFragment.MainFragment
 import ru.vvs.terminal1.screens.mainFragment.MainViewModel
 
 class OrdersFragment : Fragment() {
@@ -45,6 +47,10 @@ class OrdersFragment : Fragment() {
         adapter = OrdersAdapter()
         recyclerView.adapter = adapter
 
+
+        viewModel.order.observe(viewLifecycleOwner) { } // снимаем наблюдение
+        viewModel.order = MutableLiveData()
+
         viewModel.isProgress.observe(viewLifecycleOwner) { bool ->
             when(bool) {
                 true -> {
@@ -68,7 +74,10 @@ class OrdersFragment : Fragment() {
         }
 
         binding.fabOrders.setOnClickListener {
-            
+            viewModel.newOrder()
+            viewModel.order.observe(viewLifecycleOwner) {order ->
+                clickOrder(order)
+            }
         }
 
     }

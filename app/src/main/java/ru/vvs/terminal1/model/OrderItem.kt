@@ -11,5 +11,5 @@ data class OrderItem(
     @ColumnInfo(name = "order_id")
     val orderId: Int,
     val barcode: String,
-    val count: Int
+    val counts: Int
 )
