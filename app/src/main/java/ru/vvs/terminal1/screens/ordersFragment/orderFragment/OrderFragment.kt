@@ -5,11 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import ru.vvs.terminal1.MAIN
+import ru.vvs.terminal1.R
 import ru.vvs.terminal1.databinding.FragmentOrderBinding
 import ru.vvs.terminal1.model.Order
+import ru.vvs.terminal1.screens.mainFragment.MainFragment
 import ru.vvs.terminal1.screens.ordersFragment.OrdersAdapter
 
 class OrderFragment : Fragment() {
@@ -22,6 +29,10 @@ class OrderFragment : Fragment() {
     private lateinit var adapter: OrdersAdapter
 
     lateinit var currentOrder: Order
+
+    private var allowManualInput = false
+    private var enableAutoZoom = true
+    private var barcodeResultView: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +60,48 @@ class OrderFragment : Fragment() {
 
         viewModel.getItems(currentOrder.id)
 
+        binding.fabOrder.setOnClickListener {
+            val optionsBuilder = GmsBarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_EAN_13)
+            if (allowManualInput) {
+                optionsBuilder.allowManualInput()
+            }
+            if (enableAutoZoom) {
+                optionsBuilder.enableAutoZoom()
+            }
+            val gmsBarcodeScanner = GmsBarcodeScanning.getClient(requireContext(), optionsBuilder.build())
+            gmsBarcodeScanner
+                .startScan()
+                .addOnSuccessListener { barcode: Barcode ->
+                    viewModel.cartItem.observe(viewLifecycleOwner) { cart ->
+                        if (cart !=null) {
+                            when (cart.Barcode.substring(0, 2)) {
+                                "27" -> if (cart.Barcode == barcode.rawValue) MainFragment.clickMovie(
+                                    cart
+                                )
+                                else -> Toast.makeText(
+                                    MAIN,
+                                    "Штрихкод начинается не на 27!",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(
+                            MAIN,
+                            "Штрихкод не обнаружен - товара нет!",
+                            Toast.LENGTH_LONG
+                        ).show()}
+                    }
+                    //поиск по barcode, возврат CartItem во ViewMidel
+                    viewModel.getCartByBarcode(barcode.rawValue!!)
+                }
+                .addOnFailureListener { e: Exception -> barcodeResultView!!.text = getErrorMessage(e) }
+                .addOnCanceledListener {
+                    //barcodeResultView!!.text = getString(R.string.error_scanner_cancelled)
+                    Toast.makeText(MAIN, getString(R.string.error_scanner_cancelled), Toast.LENGTH_SHORT).show()
+                }
+        }
 
     }
 
