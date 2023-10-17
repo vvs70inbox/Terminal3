@@ -58,7 +58,7 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
         val itemsOrder = myItemsList.value!!.get(position)
 
         viewModelScope.launch(Dispatchers.IO) {
-            itemOrder.postValue(repository.deleteItem(itemsOrder))
+            repository.deleteItem(itemsOrder.Barcode, orderId)
             _myItemsList.value = _myItemsList.value!!.toMutableList().apply { removeAt(position)}
             getItems(orderId)
         }

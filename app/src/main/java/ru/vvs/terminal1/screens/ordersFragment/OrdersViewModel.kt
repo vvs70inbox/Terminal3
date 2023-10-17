@@ -39,6 +39,7 @@ class OrdersViewModel(application: Application): AndroidViewModel(application) {
     fun newOrder() {
         viewModelScope.launch(Dispatchers.IO) {
             order.postValue(repository.newOrder())
+            getOrders(false)
         }
     }
 

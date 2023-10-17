@@ -45,11 +45,6 @@ class ItemsRepository(private val itemsDao: DaoItemsOrder) {
     suspend fun deleteItem(barcode: String, orderId: Int) {
 
         var itemOrder = getItemOrderByBarcode(barcode, orderId)
-        itemOrder.counts +=1
-
-        val item = OrderItem(itemOrder.id, orderId, barcode, itemOrder.counts)
-
-        itemsDao.UpdateItem(item)
-        val itemsOrder = itemsDao.getItemByBarcode(barcode, orderId)
+        itemsDao.DeleteItem(itemOrder)
     }
 }

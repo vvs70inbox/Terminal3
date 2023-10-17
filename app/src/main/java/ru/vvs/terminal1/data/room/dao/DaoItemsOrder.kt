@@ -1,6 +1,7 @@
 package ru.vvs.terminal1.data.room.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -26,6 +27,9 @@ interface DaoItemsOrder {
 
         @Update
         suspend fun UpdateItem(orderItem: OrderItem)
+
+        @Delete
+        suspend fun DeleteItem(orderItem: OrderItem)
 
         @Query("SELECT COUNT(id) from orders_item_table")
         suspend fun getCount(): Int

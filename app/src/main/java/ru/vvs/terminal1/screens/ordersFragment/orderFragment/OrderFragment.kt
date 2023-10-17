@@ -86,7 +86,7 @@ class OrderFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
-                viewModel.swipeItem(viewHolder.adapterPosition)
+                viewModel.swipeItem(viewHolder.adapterPosition, currentOrder.id)
 
                 // this method is called when we swipe our item to right direction.
                 // on below line we are getting the item at a particular position.
