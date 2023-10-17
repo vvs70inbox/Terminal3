@@ -1,5 +1,6 @@
 package ru.vvs.terminal1.model
 
+import android.text.format.DateFormat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable

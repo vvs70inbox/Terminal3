@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.mlkit.common.MlKitException
@@ -64,6 +65,9 @@ class OrderFragment : Fragment() {
         binding.orderDate.text = currentOrder.date
         binding.orderNote.text = currentOrder.name
 
+        viewModel.itemOrder.observe(viewLifecycleOwner) { } // снимаем наблюдение
+        viewModel.itemOrder = MutableLiveData()
+
         viewModel.getItems(currentOrder.id)
         viewModel.myItemsList.observe(viewLifecycleOwner) { list ->
             adapter.setList(list)
@@ -92,13 +96,20 @@ class OrderFragment : Fragment() {
                                 ).show()
                             }
                         }
-                        else
-                        {
-                            Toast.makeText(
-                            MAIN,
-                            "Штрихкод не обнаружен - товара нет!",
-                            Toast.LENGTH_LONG
-                        ).show()}
+                        else {
+                            when (barcode.rawValue!!.substring(0, 2)) {
+                                "27" -> // Новая запись о товаре
+                                 {
+                                     Toast.makeText(MAIN,"Надо заводить запись!!!", Toast.LENGTH_LONG).show()
+                                     viewModel.newItem(barcode.rawValue!!, currentOrder.id)
+                                 }
+                                else -> Toast.makeText(
+                                    MAIN,
+                                    "Штрихкод не обнаружен - товара нет!",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
                     }
                     //поиск по barcode, возврат Item во ViewMidel
                     viewModel.getItemByBarcode(barcode.rawValue!!)

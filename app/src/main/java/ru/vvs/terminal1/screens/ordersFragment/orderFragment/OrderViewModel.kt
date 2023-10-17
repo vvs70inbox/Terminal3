@@ -39,4 +39,10 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
         }
 
     }
+
+    fun newItem(barcode: String, orderId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            itemOrder.postValue(repository.newItem(barcode, orderId))
+        }
+    }
 }
