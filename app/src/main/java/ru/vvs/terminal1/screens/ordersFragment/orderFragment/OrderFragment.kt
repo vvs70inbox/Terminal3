@@ -9,7 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
@@ -34,7 +36,7 @@ class OrderFragment : Fragment() {
     lateinit var currentOrder: Order
 
     private var allowManualInput = false
-    private var enableAutoZoom = true
+    private var enableAutoZoom = false //true
     private var barcodeResultView: TextView? = null
 
     override fun onCreateView(
@@ -72,6 +74,55 @@ class OrderFragment : Fragment() {
         viewModel.myItemsList.observe(viewLifecycleOwner) { list ->
             adapter.setList(list)
         }
+
+        ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+                viewModel.swipeItem(viewHolder.adapterPosition)
+
+                // this method is called when we swipe our item to right direction.
+                // on below line we are getting the item at a particular position.
+                ////val deletedCourse: ItemsOrder =
+                    ////viewModel.myItemsList.value!!.get(viewHolder.adapterPosition)
+                    //-//courseList.get(viewHolder.adapterPosition)
+
+                // below line is to get the position
+                // of the item at that position.
+                ////val position = viewHolder.adapterPosition
+
+
+                // this method is called when item is swiped.
+                // below line is to remove item from our array list.
+                ////courseList.removeAt(viewHolder.adapterPosition)
+
+                // below line is to notify our item is removed from adapter.
+                ////adapter.notifyItemRemoved(viewHolder.adapterPosition)
+
+                // below line is to display our snackbar with action.
+/*                Snackbar.make(recyclerView, "Deleted " + deletedCourse.Product, Snackbar.LENGTH_LONG)
+                    .setAction(
+                        "Undo",
+                        View.OnClickListener {
+                            // adding on click listener to our action of snack bar.
+                            // below line is to add our item to array list with a position.
+                            ////courseList.add(position, deletedCourse)
+
+                            // below line is to notify item is
+                            // added to our adapter class.
+                            //adapter.notifyItemInserted(position)
+                            Toast.makeText(MAIN, "Пробуем свайп", Toast.LENGTH_SHORT).show()
+                        }).show()*/
+            }
+
+        }).attachToRecyclerView(recyclerView)
 
         binding.fabOrder.setOnClickListener {
             val optionsBuilder = GmsBarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_EAN_13)

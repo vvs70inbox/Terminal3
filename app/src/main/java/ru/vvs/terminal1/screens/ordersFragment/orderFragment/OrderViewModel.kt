@@ -50,6 +50,11 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             itemOrder.postValue(repository.updateItem(barcode, orderId))
             getItems(orderId)
+            itemOrder = MutableLiveData()
         }
+    }
+
+    fun swipeItem(position: Int) {
+        _myItemsList.value = _myItemsList.value!!.toMutableList().apply { removeAt(position)}
     }
 }
