@@ -4,6 +4,6 @@ data class ItemsOrder(
     val Product: String,
     val Character: String,
     val Barcode: String,
-    val counts: Int,
+    var counts: Int,
     val Price: Int
 )

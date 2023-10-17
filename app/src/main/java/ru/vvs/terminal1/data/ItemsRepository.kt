@@ -11,9 +11,13 @@ class ItemsRepository(private val itemsDao: DaoItemsOrder) {
     suspend fun getItems(orderId: Int): List<ItemsOrder> {
         return itemsDao.getItemsOrder(orderId)
     }
-
-    suspend fun getItemByBarcode(barcode: String): ItemsOrder {
-        return itemsDao.getItemByBarcode(barcode)
+// ищем в объединении
+    suspend fun getItemByBarcode(barcode: String, orderId: Int): ItemsOrder {
+        return itemsDao.getItemByBarcode(barcode, orderId)
+    }
+// ищем в таблице
+    suspend fun getItemOrderByBarcode(barcode: String, orderId: Int): OrderItem {
+        return itemsDao.getItemOrderByBarcode(barcode, orderId)
     }
 
     suspend fun newItem(barcode: String, orderId: Int) : ItemsOrder {
@@ -21,9 +25,21 @@ class ItemsRepository(private val itemsDao: DaoItemsOrder) {
         val item = OrderItem(count, orderId, barcode, 1)
 
         itemsDao.InsertItem(item)
-        val itemOrder = itemsDao.getItemByBarcode(barcode)
+        val itemsOrder = itemsDao.getItemByBarcode(barcode, orderId)
 
-        return itemOrder
+        return itemsOrder
+    }
+
+    suspend fun updateItem(barcode: String, orderId: Int) : ItemsOrder {
+
+        var itemOrder = getItemOrderByBarcode(barcode, orderId)
+        itemOrder.counts +=1
+        val item = OrderItem(itemOrder.id, orderId, barcode, itemOrder.counts)
+
+        itemsDao.UpdateItem(item)
+        val itemsOrder = itemsDao.getItemByBarcode(barcode, orderId)
+
+        return itemsOrder
     }
 
 }

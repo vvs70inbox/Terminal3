@@ -33,9 +33,9 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun getItemByBarcode(barcode: String) {
+    fun getItemByBarcode(barcode: String, orderId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            itemOrder.postValue(repository.getItemByBarcode(barcode))
+            itemOrder.postValue(repository.getItemByBarcode(barcode, orderId))
         }
 
     }
@@ -43,6 +43,13 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     fun newItem(barcode: String, orderId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             itemOrder.postValue(repository.newItem(barcode, orderId))
+            getItems(orderId)
+        }
+    }
+    fun updateItem(barcode: String, orderId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            itemOrder.postValue(repository.updateItem(barcode, orderId))
+            getItems(orderId)
         }
     }
 }

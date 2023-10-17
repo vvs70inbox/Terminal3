@@ -88,7 +88,11 @@ class OrderFragment : Fragment() {
                     viewModel.itemOrder.observe(viewLifecycleOwner) { cart ->
                         if (cart !=null) {
                             when (cart.Barcode.substring(0, 2)) {
-                                "27" -> if (cart.Barcode == barcode.rawValue) Toast.makeText(MAIN,"ВСЁ ОК!!!!!", Toast.LENGTH_LONG).show()
+                                "27" -> // изменяем кол-во
+                                {
+                                    viewModel.updateItem(barcode.rawValue!!, currentOrder.id)
+                                    //if (cart.Barcode == barcode.rawValue) Toast.makeText(MAIN, "ВСЁ ОК!!!!!", Toast.LENGTH_LONG).show()
+                                }
                                 else -> Toast.makeText(
                                     MAIN,
                                     "Штрихкод начинается не на 27!",
@@ -100,7 +104,7 @@ class OrderFragment : Fragment() {
                             when (barcode.rawValue!!.substring(0, 2)) {
                                 "27" -> // Новая запись о товаре
                                  {
-                                     Toast.makeText(MAIN,"Надо заводить запись!!!", Toast.LENGTH_LONG).show()
+                                     //Toast.makeText(MAIN,"Надо заводить запись!!!", Toast.LENGTH_LONG).show()
                                      viewModel.newItem(barcode.rawValue!!, currentOrder.id)
                                  }
                                 else -> Toast.makeText(
@@ -112,7 +116,7 @@ class OrderFragment : Fragment() {
                         }
                     }
                     //поиск по barcode, возврат Item во ViewMidel
-                    viewModel.getItemByBarcode(barcode.rawValue!!)
+                    viewModel.getItemByBarcode(barcode.rawValue!!, currentOrder.id)
                 }
                 .addOnFailureListener { e: Exception -> barcodeResultView!!.text = getErrorMessage(e) }
                 .addOnCanceledListener {

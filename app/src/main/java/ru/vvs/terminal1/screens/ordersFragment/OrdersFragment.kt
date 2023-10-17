@@ -47,7 +47,6 @@ class OrdersFragment : Fragment() {
         adapter = OrdersAdapter()
         recyclerView.adapter = adapter
 
-
         viewModel.order.observe(viewLifecycleOwner) { } // снимаем наблюдение
         viewModel.order = MutableLiveData()
 

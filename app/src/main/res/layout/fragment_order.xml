@@ -87,7 +87,8 @@
         tools:listitem="@layout/item_order_layout"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orderNote" />
+        app:layout_constraintTop_toBottomOf="@+id/orderNote"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabOrder"

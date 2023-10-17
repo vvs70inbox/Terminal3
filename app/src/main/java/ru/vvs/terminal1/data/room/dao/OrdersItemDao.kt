@@ -2,7 +2,6 @@ package ru.vvs.terminal1.data.room.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import ru.vvs.terminal1.model.Order
 import ru.vvs.terminal1.model.OrderItem
 
 @Dao
