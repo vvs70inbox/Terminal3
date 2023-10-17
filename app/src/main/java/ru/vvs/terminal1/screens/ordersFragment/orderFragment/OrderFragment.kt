@@ -9,12 +9,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import ru.vvs.terminal1.MAIN
 import ru.vvs.terminal1.R
 import ru.vvs.terminal1.databinding.FragmentOrderBinding
+import ru.vvs.terminal1.model.ItemsOrder
 import ru.vvs.terminal1.model.Order
 import ru.vvs.terminal1.screens.mainFragment.MainFragment
 import ru.vvs.terminal1.screens.ordersFragment.OrdersAdapter
@@ -26,7 +28,7 @@ class OrderFragment : Fragment() {
 
     private lateinit var viewModel: OrderViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: OrdersAdapter
+    private lateinit var adapter: OrderAdapter
 
     lateinit var currentOrder: Order
 
@@ -54,11 +56,18 @@ class OrderFragment : Fragment() {
         MAIN.actionBar.title = "Работа с заказом"
         viewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
 
+        recyclerView = binding.itemsOrderLayout
+        adapter = OrderAdapter()
+        recyclerView.adapter = adapter
+
         binding.orderNumber.text = currentOrder.number
         binding.orderDate.text = currentOrder.date
         binding.orderNote.text = currentOrder.name
 
         viewModel.getItems(currentOrder.id)
+        viewModel.myItemsList.observe(viewLifecycleOwner) { list ->
+            adapter.setList(list)
+        }
 
         binding.fabOrder.setOnClickListener {
             val optionsBuilder = GmsBarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_EAN_13)
@@ -72,12 +81,10 @@ class OrderFragment : Fragment() {
             gmsBarcodeScanner
                 .startScan()
                 .addOnSuccessListener { barcode: Barcode ->
-                    viewModel.cartItem.observe(viewLifecycleOwner) { cart ->
+                    viewModel.itemOrder.observe(viewLifecycleOwner) { cart ->
                         if (cart !=null) {
                             when (cart.Barcode.substring(0, 2)) {
-                                "27" -> if (cart.Barcode == barcode.rawValue) MainFragment.clickMovie(
-                                    cart
-                                )
+                                "27" -> if (cart.Barcode == barcode.rawValue) Toast.makeText(MAIN,"ВСЁ ОК!!!!!", Toast.LENGTH_LONG).show()
                                 else -> Toast.makeText(
                                     MAIN,
                                     "Штрихкод начинается не на 27!",
@@ -93,8 +100,8 @@ class OrderFragment : Fragment() {
                             Toast.LENGTH_LONG
                         ).show()}
                     }
-                    //поиск по barcode, возврат CartItem во ViewMidel
-                    viewModel.getCartByBarcode(barcode.rawValue!!)
+                    //поиск по barcode, возврат Item во ViewMidel
+                    viewModel.getItemByBarcode(barcode.rawValue!!)
                 }
                 .addOnFailureListener { e: Exception -> barcodeResultView!!.text = getErrorMessage(e) }
                 .addOnCanceledListener {
@@ -105,9 +112,24 @@ class OrderFragment : Fragment() {
 
     }
 
+    private fun getErrorMessage(e: Exception): String? {
+        return if (e is MlKitException) {
+            when (e.errorCode) {
+                MlKitException.CODE_SCANNER_CAMERA_PERMISSION_NOT_GRANTED ->
+                    getString(R.string.error_camera_permission_not_granted)
+                MlKitException.CODE_SCANNER_APP_NAME_UNAVAILABLE ->
+                    getString(R.string.error_app_name_unavailable)
+                else -> getString(R.string.error_default_message, e)
+            }
+        } else {
+            e.message
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         mBinding = null
     }
+
 }

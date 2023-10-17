@@ -20,6 +20,8 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     private var _myItemsList: MutableLiveData<List<ItemsOrder>> = MutableLiveData()
     val myItemsList: LiveData<List<ItemsOrder>> = _myItemsList
 
+    var itemOrder: MutableLiveData<ItemsOrder> = MutableLiveData()
+
     init {
         val itemsDao = CartsDatabase.getInstance(application).getAllItemsFromOrder()
         repository = ItemsRepository(itemsDao)
@@ -29,5 +31,12 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             _myItemsList.postValue(repository.getItems(orderId))
         }
+    }
+
+    fun getItemByBarcode(barcode: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            itemOrder.postValue(repository.getItemByBarcode(barcode))
+        }
+
     }
 }

@@ -8,4 +8,9 @@ class ItemsRepository(private val itemsDao: DaoItemsOrder) {
     suspend fun getItems(orderId: Int): List<ItemsOrder> {
         return itemsDao.getItemsOrder(orderId)
     }
+
+    suspend fun getItemByBarcode(barcode: String): ItemsOrder {
+        return itemsDao.getItemByBarcode(barcode)
+    }
+
 }
