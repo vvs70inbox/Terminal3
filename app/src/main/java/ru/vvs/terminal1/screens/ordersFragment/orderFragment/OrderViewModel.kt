@@ -54,7 +54,13 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun swipeItem(position: Int) {
-        _myItemsList.value = _myItemsList.value!!.toMutableList().apply { removeAt(position)}
+    fun swipeItem(position: Int, orderId: Int) {
+        val itemsOrder = myItemsList.value!!.get(position)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            itemOrder.postValue(repository.deleteItem(itemsOrder))
+            _myItemsList.value = _myItemsList.value!!.toMutableList().apply { removeAt(position)}
+            getItems(orderId)
+        }
     }
 }
