@@ -8,10 +8,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.vvs.terminal1.data.ItemsRepository
-import ru.vvs.terminal1.data.OrdersRepository
 import ru.vvs.terminal1.data.room.CartsDatabase
 import ru.vvs.terminal1.model.ItemsOrder
-import ru.vvs.terminal1.model.Order
 
 class OrderViewModel(application: Application): AndroidViewModel(application) {
 
@@ -33,33 +31,42 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun getItemByBarcode(barcode: String, orderId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            itemOrder.postValue(repository.getItemByBarcode(barcode, orderId))
-        }
-
+    fun getItemByBarcode(barcode: String): ItemsOrder? {
+        return myItemsList.value!!.find { it.Barcode == barcode }
     }
 
-    fun newItem(barcode: String, orderId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            itemOrder.postValue(repository.newItem(barcode, orderId))
-            getItems(orderId)
-        }
-    }
     fun updateItem(barcode: String, orderId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            itemOrder.postValue(repository.updateItem(barcode, orderId))
+        val item = getItemByBarcode(barcode)
+        if (item == null) {
+            viewModelScope.launch(Dispatchers.IO) {
+                itemOrder.postValue(repository.newItem(barcode, orderId))
+                getItems(orderId)
+                itemOrder = MutableLiveData()
+            }
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                itemOrder.postValue(repository.updateItem(barcode, orderId))
+                getItems(orderId)
+                itemOrder = MutableLiveData()
+            }
+        }
+/*        viewModelScope.launch(Dispatchers.IO) {
+            val item = getItemByBarcode(barcode)
+            if (item == null) {
+                itemOrder.postValue(repository.newItem(barcode, orderId))
+            } else {
+                itemOrder.postValue(repository.updateItem(barcode, orderId))
+            }
             getItems(orderId)
             itemOrder = MutableLiveData()
-        }
+        }*/
     }
 
     fun swipeItem(position: Int, orderId: Int) {
         val itemsOrder = myItemsList.value!!.get(position)
-
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteItem(itemsOrder.Barcode, orderId)
-            _myItemsList.value = _myItemsList.value!!.toMutableList().apply { removeAt(position)}
+            _myItemsList.postValue(_myItemsList.value!!.toMutableList().apply { removeAt(position)})
             getItems(orderId)
         }
     }

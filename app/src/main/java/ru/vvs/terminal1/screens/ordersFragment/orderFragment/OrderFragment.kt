@@ -1,5 +1,7 @@
 package ru.vvs.terminal1.screens.ordersFragment.orderFragment
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -19,10 +22,7 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import ru.vvs.terminal1.MAIN
 import ru.vvs.terminal1.R
 import ru.vvs.terminal1.databinding.FragmentOrderBinding
-import ru.vvs.terminal1.model.ItemsOrder
 import ru.vvs.terminal1.model.Order
-import ru.vvs.terminal1.screens.mainFragment.MainFragment
-import ru.vvs.terminal1.screens.ordersFragment.OrdersAdapter
 
 class OrderFragment : Fragment() {
 
@@ -54,7 +54,7 @@ class OrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
     }
-
+    private fun toast(text: String) = Toast.makeText(MAIN, text, Toast.LENGTH_SHORT).show()
     private fun init() {
         MAIN.actionBar.title = "Работа с заказом"
         viewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
@@ -86,7 +86,26 @@ class OrderFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
-                viewModel.swipeItem(viewHolder.adapterPosition, currentOrder.id)
+
+                val alertDialog = AlertDialog.Builder(MAIN)
+
+                alertDialog.apply {
+                    setIcon(R.drawable.baseline_delete_24)
+                    setTitle("Удаление товара")
+                    setMessage("Вы уверены, что хотите удалить выбранный товар?")
+                    setCancelable(false)
+                    setPositiveButton("ДА") { _, _ ->
+                        //toast("clicked positive button")
+                        viewModel.swipeItem(viewHolder.adapterPosition, currentOrder.id)
+                    }
+                    setNegativeButton("НЕТ") { _, _ ->
+                        //toast("clicked negative button")
+                        viewModel.getItems(currentOrder.id)
+                    }
+                    //setNeutralButton("Neutral") { _, _ ->
+                    //    toast("clicked neutral button")
+                    //}
+                }.create().show()
 
                 // this method is called when we swipe our item to right direction.
                 // on below line we are getting the item at a particular position.
@@ -136,38 +155,14 @@ class OrderFragment : Fragment() {
             gmsBarcodeScanner
                 .startScan()
                 .addOnSuccessListener { barcode: Barcode ->
-                    viewModel.itemOrder.observe(viewLifecycleOwner) { cart ->
-                        if (cart !=null) {
-                            when (cart.Barcode.substring(0, 2)) {
-                                "27" -> // изменяем кол-во
-                                {
-                                    viewModel.updateItem(barcode.rawValue!!, currentOrder.id)
-                                    //if (cart.Barcode == barcode.rawValue) Toast.makeText(MAIN, "ВСЁ ОК!!!!!", Toast.LENGTH_LONG).show()
-                                }
-                                else -> Toast.makeText(
-                                    MAIN,
-                                    "Штрихкод начинается не на 27!",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
+                    when (barcode.rawValue!!.substring(0, 2)) {
+                        "27" -> // изменяем кол-во
+                        {
+                            viewModel.updateItem(barcode.rawValue!!, currentOrder.id)
+                            //if (cart.Barcode == barcode.rawValue) Toast.makeText(MAIN, "ВСЁ ОК!!!!!", Toast.LENGTH_LONG).show()
                         }
-                        else {
-                            when (barcode.rawValue!!.substring(0, 2)) {
-                                "27" -> // Новая запись о товаре
-                                 {
-                                     //Toast.makeText(MAIN,"Надо заводить запись!!!", Toast.LENGTH_LONG).show()
-                                     viewModel.newItem(barcode.rawValue!!, currentOrder.id)
-                                 }
-                                else -> Toast.makeText(
-                                    MAIN,
-                                    "Штрихкод не обнаружен - товара нет!",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        }
+                        else -> Toast.makeText(MAIN, "Штрихкод начинается не на 27!", Toast.LENGTH_LONG).show()
                     }
-                    //поиск по barcode, возврат Item во ViewMidel
-                    viewModel.getItemByBarcode(barcode.rawValue!!, currentOrder.id)
                 }
                 .addOnFailureListener { e: Exception -> barcodeResultView!!.text = getErrorMessage(e) }
                 .addOnCanceledListener {
@@ -175,7 +170,6 @@ class OrderFragment : Fragment() {
                     Toast.makeText(MAIN, getString(R.string.error_scanner_cancelled), Toast.LENGTH_SHORT).show()
                 }
         }
-
     }
 
     private fun getErrorMessage(e: Exception): String? {

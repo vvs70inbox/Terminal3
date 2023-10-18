@@ -31,6 +31,6 @@ interface DaoItemsOrder {
         @Delete
         suspend fun DeleteItem(orderItem: OrderItem)
 
-        @Query("SELECT COUNT(id) from orders_item_table")
+        @Query("SELECT COUNT(*) from orders_item_table")
         suspend fun getCount(): Int
 }

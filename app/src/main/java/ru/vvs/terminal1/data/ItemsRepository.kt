@@ -21,7 +21,7 @@ class ItemsRepository(private val itemsDao: DaoItemsOrder) {
     }
 
     suspend fun newItem(barcode: String, orderId: Int) : ItemsOrder {
-        val count = itemsDao.getCount()+1
+        val count = 0//itemsDao.getCount()+1
         val item = OrderItem(count, orderId, barcode, 1)
 
         itemsDao.InsertItem(item)
