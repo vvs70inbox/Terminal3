@@ -1,6 +1,5 @@
 package ru.vvs.terminal1.data
 
-import android.icu.util.Calendar
 import ru.vvs.terminal1.data.room.dao.DaoItemsOrder
 import ru.vvs.terminal1.model.ItemsOrder
 import ru.vvs.terminal1.model.Order
@@ -16,18 +15,17 @@ class ItemsRepository(private val itemsDao: DaoItemsOrder) {
         return itemsDao.getItemByBarcode(barcode, orderId)
     }
 // ищем в таблице
-    suspend fun getItemOrderByBarcode(barcode: String, orderId: Int): OrderItem {
+    private suspend fun getItemOrderByBarcode(barcode: String, orderId: Int): OrderItem {
         return itemsDao.getItemOrderByBarcode(barcode, orderId)
     }
 
-    suspend fun newItem(barcode: String, orderId: Int) : ItemsOrder {
+    suspend fun newItem(barcode: String, orderId: Int): ItemsOrder {
         val count = 0//itemsDao.getCount()+1
         val item = OrderItem(count, orderId, barcode, 1)
 
         itemsDao.InsertItem(item)
-        val itemsOrder = itemsDao.getItemByBarcode(barcode, orderId)
 
-        return itemsOrder
+        return itemsDao.getItemByBarcode(barcode, orderId)
     }
 
     suspend fun updateItem(barcode: String, orderId: Int) : ItemsOrder {
@@ -40,6 +38,16 @@ class ItemsRepository(private val itemsDao: DaoItemsOrder) {
         val itemsOrder = itemsDao.getItemByBarcode(barcode, orderId)
 
         return itemsOrder
+    }
+
+    suspend fun updateItemCount(itemsOrder: ItemsOrder, orderId: Int) {
+
+        var itemOrder = getItemOrderByBarcode(itemsOrder.Barcode, orderId)
+        itemOrder.counts = itemsOrder.counts
+        val item = OrderItem(itemOrder.id, orderId, itemsOrder.Barcode, itemOrder.counts)
+
+        itemsDao.UpdateItem(item)
+
     }
 
     suspend fun deleteItem(barcode: String, orderId: Int) {

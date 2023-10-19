@@ -8,21 +8,6 @@
     android:padding="8dp"
     tools:context=".screens.ordersFragment.orderFragment.OrderFragment">
 
-
-    <TextView
-        android:id="@+id/orderNameTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Заказ покупателя"
-        android:textSize="24dp"
-        android:padding="16dp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/orderNumberTitle"
         android:layout_width="wrap_content"
@@ -31,16 +16,19 @@
         android:textSize="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/orderNameTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/orderNumber"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Номер заказа"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Номер заказа"
+        android:textSize="16dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/orderNumberTitle"
-        app:layout_constraintTop_toBottomOf="@+id/orderNameTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/orderDateTitle"
         android:layout_width="wrap_content"
@@ -50,16 +38,19 @@
         android:textSize="16dp"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toEndOf="@+id/orderNumber"
-        app:layout_constraintTop_toBottomOf="@id/orderNameTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/orderDate"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Номер заказа"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Номер заказа"
+        android:textSize="16dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/orderDateTitle"
-        app:layout_constraintTop_toBottomOf="@+id/orderNameTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/orderNoteTitle"
@@ -70,13 +61,16 @@
         android:textSize="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/orderNumber" />
+
     <TextView
         android:id="@+id/orderNote"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:text="Примечание"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Примечание"
+        android:textSize="16dp"
+        android:textStyle="italic"
         app:layout_constraintStart_toEndOf="@+id/orderNoteTitle"
         app:layout_constraintTop_toBottomOf="@+id/orderNumber" />
 

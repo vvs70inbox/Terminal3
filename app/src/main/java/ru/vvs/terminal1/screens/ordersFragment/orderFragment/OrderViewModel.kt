@@ -38,7 +38,7 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun getItemByBarcode(barcode: String): ItemsOrder? {
+    private fun getItemByBarcode(barcode: String): ItemsOrder? {
         return myItemsList.value!!.find { it.Barcode == barcode }
     }
 
@@ -61,15 +61,14 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
 
     fun updateItemCount(itemsOrder: ItemsOrder, orderId: Int, counts: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            _myItemsList.value!!.find{ it.Barcode == itemsOrder.Barcode }.counts = counts
-            itemOrder.postValue(repository.updateItem(itemsOrder.Barcode, orderId))
+            _myItemsList.value!!.find{ it.Barcode == itemsOrder.Barcode }!!.counts = counts
+            repository.updateItemCount(itemsOrder, orderId)
             getItems(orderId)
-            itemOrder = MutableLiveData()
         }
     }
 
     fun swipeItem(position: Int, orderId: Int) {
-        val itemsOrder = myItemsList.value!!.get(position)
+        val itemsOrder = myItemsList.value!![position]
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteItem(itemsOrder.Barcode, orderId)
             _myItemsList.postValue(_myItemsList.value!!.toMutableList().apply { removeAt(position)})

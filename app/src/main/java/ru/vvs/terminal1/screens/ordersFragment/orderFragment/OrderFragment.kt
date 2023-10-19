@@ -66,7 +66,7 @@ class OrderFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
 
         recyclerView = binding.itemsOrderLayout
-        adapter = OrderAdapter()
+        adapter = OrderAdapter() {position -> onItemClick(position)}
         recyclerView.adapter = adapter
 
         binding.orderNumber.text = currentOrder.number
@@ -199,7 +199,28 @@ class OrderFragment : Fragment() {
         mBinding = null
     }
 
-    companion object {
+    private fun onItemClick(position: Int) {
+        //toast(adapter.listMain[position].Product)
+        val itemsOrder = adapter.listMain[position]
+        val builder = AlertDialog.Builder(MAIN)
+        val inflater = MAIN.layoutInflater
+        val oldCounts = itemsOrder.counts
+
+        builder.setTitle("With EditText")
+        val dialogLayout = inflater.inflate(R.layout.item_count_alert, null)
+        dialogLayout.findViewById<TextView>(R.id.textViewAlert).text = itemsOrder.Product
+        val editText  = dialogLayout.findViewById<EditText>(R.id.editTextAlert)
+        builder.setView(dialogLayout)
+        builder.setPositiveButton("OK") { dialogInterface, i ->
+            val newCounts = editText.text.toString().toInt()
+            if (oldCounts != newCounts && newCounts != 0) {
+                viewModel.updateItemCount(itemsOrder, currentOrder.id, newCounts)
+            }
+        }
+        builder.show()
+    }
+
+/*    companion object {
         @SuppressLint("MissingInflatedId")
         fun clickItem(itemsOrder: ItemsOrder) {
             val builder = AlertDialog.Builder(MAIN)
@@ -219,6 +240,6 @@ class OrderFragment : Fragment() {
             }
             builder.show()
         }
-    }
+    }*/
 
 }
