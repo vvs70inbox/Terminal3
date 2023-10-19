@@ -13,7 +13,7 @@ import ru.vvs.terminal1.screens.mainFragment.MainFragment
 
 class OrdersAdapter: RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder>() {
 
-    var listMain = emptyList<Order>()
+    private var listMain = emptyList<Order>()
 
     class OrdersViewHolder(view: View): RecyclerView.ViewHolder(view)
 

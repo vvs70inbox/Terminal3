@@ -57,16 +57,15 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
                 itemOrder = MutableLiveData()
             }
         }
-/*        viewModelScope.launch(Dispatchers.IO) {
-            val item = getItemByBarcode(barcode)
-            if (item == null) {
-                itemOrder.postValue(repository.newItem(barcode, orderId))
-            } else {
-                itemOrder.postValue(repository.updateItem(barcode, orderId))
-            }
+    }
+
+    fun updateItemCount(itemsOrder: ItemsOrder, orderId: Int, counts: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _myItemsList.value!!.find{ it.Barcode == itemsOrder.Barcode }.counts = counts
+            itemOrder.postValue(repository.updateItem(itemsOrder.Barcode, orderId))
             getItems(orderId)
             itemOrder = MutableLiveData()
-        }*/
+        }
     }
 
     fun swipeItem(position: Int, orderId: Int) {

@@ -1,5 +1,6 @@
 package ru.vvs.terminal1.screens.ordersFragment.orderFragment
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -14,6 +16,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
+import androidx.recyclerview.widget.RecyclerView.RecyclerListener
+import androidx.recyclerview.widget.RecyclerView.SimpleOnItemTouchListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -22,6 +27,7 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import ru.vvs.terminal1.MAIN
 import ru.vvs.terminal1.R
 import ru.vvs.terminal1.databinding.FragmentOrderBinding
+import ru.vvs.terminal1.model.ItemsOrder
 import ru.vvs.terminal1.model.Order
 
 class OrderFragment : Fragment() {
@@ -86,7 +92,6 @@ class OrderFragment : Fragment() {
             ): Boolean {
                 return false
             }
-
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
                 val alertDialog = AlertDialog.Builder(MAIN)
@@ -192,6 +197,28 @@ class OrderFragment : Fragment() {
         super.onDestroyView()
         viewModel.updateOrder(currentOrder)
         mBinding = null
+    }
+
+    companion object {
+        @SuppressLint("MissingInflatedId")
+        fun clickItem(itemsOrder: ItemsOrder) {
+            val builder = AlertDialog.Builder(MAIN)
+            val inflater = MAIN.layoutInflater
+            val oldCounts = itemsOrder.counts
+
+            builder.setTitle("With EditText")
+            val dialogLayout = inflater.inflate(R.layout.item_count_alert, null)
+            dialogLayout.findViewById<TextView>(R.id.textViewAlert).text = itemsOrder.Product
+            val editText  = dialogLayout.findViewById<EditText>(R.id.editTextAlert)
+            builder.setView(dialogLayout)
+            builder.setPositiveButton("OK") { dialogInterface, i ->
+                val newCounts = editText.text.toString().toInt()
+                if (oldCounts != newCounts && newCounts != 0) {
+                    view
+                }
+            }
+            builder.show()
+        }
     }
 
 }
