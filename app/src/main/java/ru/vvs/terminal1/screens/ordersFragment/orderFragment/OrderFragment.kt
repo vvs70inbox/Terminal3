@@ -73,6 +73,9 @@ class OrderFragment : Fragment() {
         viewModel.getItems(currentOrder.id)
         viewModel.myItemsList.observe(viewLifecycleOwner) { list ->
             adapter.setList(list)
+            currentOrder.products = list.sumOf { it.counts }
+            currentOrder.amount = list.sumOf { it.counts * it.Price }
+            currentOrder.positions = list.count()
         }
 
         ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -85,7 +88,6 @@ class OrderFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
 
                 val alertDialog = AlertDialog.Builder(MAIN)
 
@@ -186,9 +188,9 @@ class OrderFragment : Fragment() {
         }
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.updateOrder(currentOrder)
         mBinding = null
     }
 

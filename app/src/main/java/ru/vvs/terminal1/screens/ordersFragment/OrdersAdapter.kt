@@ -28,9 +28,9 @@ class OrdersAdapter: RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder>() {
 
     override fun onBindViewHolder(holder: OrdersViewHolder, position: Int) {
         holder.itemView.findViewById<TextView>(R.id.item_number).text = listMain[position].id.toString()//.name
-        holder.itemView.findViewById<TextView>(R.id.item_date).text = listMain[position].date
-        holder.itemView.findViewById<TextView>(R.id.item_positions).text = listMain[position].positions.toString()
-        holder.itemView.findViewById<TextView>(R.id.item_products).text = listMain[position].products.toString()
+        holder.itemView.findViewById<TextView>(R.id.item_date).text = "от ${listMain[position].date}"
+        holder.itemView.findViewById<TextView>(R.id.item_positions).text ="${listMain[position].positions} тов."
+        holder.itemView.findViewById<TextView>(R.id.item_products).text = "${listMain[position].products} шт."
         holder.itemView.findViewById<TextView>(R.id.item_amount).text = listMain[position].amount.toString()
     }
 

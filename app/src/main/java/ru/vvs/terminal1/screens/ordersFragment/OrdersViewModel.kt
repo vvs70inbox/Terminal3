@@ -43,4 +43,11 @@ class OrdersViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    fun swipeItem(order: Order) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteOrder(order)
+            getOrders(false)
+        }
+    }
+
 }

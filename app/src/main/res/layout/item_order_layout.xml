@@ -17,8 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Product"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/item_character_order"
             android:layout_width="match_parent"
@@ -40,17 +41,20 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Price"
+            android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@+id/item_count_order"
             app:layout_constraintStart_toEndOf="@id/item_barcode_order"
             app:layout_constraintTop_toBottomOf="@id/item_character_order" />
+
         <TextView
             android:id="@+id/item_count_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Count"
-            android:layout_marginStart="16dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_character_order"/>
+            app:layout_constraintTop_toBottomOf="@id/item_character_order" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

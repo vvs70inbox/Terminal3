@@ -47,4 +47,7 @@ class ItemsRepository(private val itemsDao: DaoItemsOrder) {
         var itemOrder = getItemOrderByBarcode(barcode, orderId)
         itemsDao.DeleteItem(itemOrder)
     }
+    suspend fun updateOrder(order: Order) {
+        itemsDao.UpdateOrder(order)
+    }
 }

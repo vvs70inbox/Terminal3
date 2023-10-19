@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import ru.vvs.terminal1.data.ItemsRepository
 import ru.vvs.terminal1.data.room.CartsDatabase
 import ru.vvs.terminal1.model.ItemsOrder
+import ru.vvs.terminal1.model.Order
 
 class OrderViewModel(application: Application): AndroidViewModel(application) {
 
@@ -28,6 +29,12 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     fun getItems(orderId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             _myItemsList.postValue(repository.getItems(orderId))
+        }
+    }
+
+    fun updateOrder(order: Order) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateOrder(order)
         }
     }
 

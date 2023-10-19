@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import ru.vvs.terminal1.model.ItemsOrder
+import ru.vvs.terminal1.model.Order
 import ru.vvs.terminal1.model.OrderItem
 
 
@@ -33,4 +34,7 @@ interface DaoItemsOrder {
 
         @Query("SELECT COUNT(*) from orders_item_table")
         suspend fun getCount(): Int
+
+        @Update
+        suspend fun UpdateOrder(order: Order)
 }

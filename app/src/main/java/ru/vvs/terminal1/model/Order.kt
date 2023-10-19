@@ -12,7 +12,7 @@ data class Order(
     val name: String,
     val number: String,
     val date: String,
-    val positions: Int,
-    val products: Int,
-    val amount: Int
+    var positions: Int,
+    var products: Int,
+    var amount: Int
 ) : Serializable

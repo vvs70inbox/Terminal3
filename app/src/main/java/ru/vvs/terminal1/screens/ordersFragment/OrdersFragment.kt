@@ -1,5 +1,6 @@
 package ru.vvs.terminal1.screens.ordersFragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ru.vvs.terminal1.MAIN
 import ru.vvs.terminal1.R
@@ -79,7 +81,74 @@ class OrdersFragment : Fragment() {
             }
         }
 
+        ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                //TODO Вынести в утилиты
+                val alertDialog = AlertDialog.Builder(MAIN)
+                alertDialog.apply {
+                    setIcon(R.drawable.baseline_delete_24)
+                    setTitle("Удаление заказа")
+                    setMessage("Вы уверены, что хотите удалить выбранный заказ?")
+                    setCancelable(false)
+                    setPositiveButton("ДА") { _, _ ->
+                        //toast("clicked positive button")
+                        viewModel.swipeItem(viewModel.myOrdersList.value!!.get(viewHolder.adapterPosition) )
+                    }
+                    setNegativeButton("НЕТ") { _, _ ->
+                        //toast("clicked negative button")
+                        viewModel.getOrders(false)
+                    }
+                    //setNeutralButton("Neutral") { _, _ ->
+                    //    toast("clicked neutral button")
+                    //}
+                }.create().show()
+
+                // this method is called when we swipe our item to right direction.
+                // on below line we are getting the item at a particular position.
+                ////val deletedCourse: ItemsOrder =
+                ////viewModel.myItemsList.value!!.get(viewHolder.adapterPosition)
+                //-//courseList.get(viewHolder.adapterPosition)
+
+                // below line is to get the position
+                // of the item at that position.
+                ////val position = viewHolder.adapterPosition
+
+
+                // this method is called when item is swiped.
+                // below line is to remove item from our array list.
+                ////courseList.removeAt(viewHolder.adapterPosition)
+
+                // below line is to notify our item is removed from adapter.
+                ////adapter.notifyItemRemoved(viewHolder.adapterPosition)
+
+                // below line is to display our snackbar with action.
+                /*                Snackbar.make(recyclerView, "Deleted " + deletedCourse.Product, Snackbar.LENGTH_LONG)
+                                    .setAction(
+                                        "Undo",
+                                        View.OnClickListener {
+                                            // adding on click listener to our action of snack bar.
+                                            // below line is to add our item to array list with a position.
+                                            ////courseList.add(position, deletedCourse)
+
+                                            // below line is to notify item is
+                                            // added to our adapter class.
+                                            //adapter.notifyItemInserted(position)
+                                            Toast.makeText(MAIN, "Пробуем свайп", Toast.LENGTH_SHORT).show()
+                                        }).show()*/
+            }
+
+        }).attachToRecyclerView(recyclerView)
+
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

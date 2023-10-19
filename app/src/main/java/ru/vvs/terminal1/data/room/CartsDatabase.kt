@@ -13,7 +13,7 @@ import ru.vvs.terminal1.model.ItemsOrder
 import ru.vvs.terminal1.model.Order
 import ru.vvs.terminal1.model.OrderItem
 
-@Database(entities = [CartItem::class,Order::class,OrderItem::class], version = 2)
+@Database(entities = [CartItem::class,Order::class,OrderItem::class], version = 3)
 abstract class CartsDatabase: RoomDatabase() {
 
     abstract fun getCartsDao(): CartsDao

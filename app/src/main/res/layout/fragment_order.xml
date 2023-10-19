@@ -80,15 +80,25 @@
         app:layout_constraintStart_toEndOf="@+id/orderNoteTitle"
         app:layout_constraintTop_toBottomOf="@+id/orderNumber" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itemsOrderLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/item_order_layout"
+        android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orderNote"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/orderNote"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/itemsOrderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orderNote"
+            tools:listitem="@layout/item_order_layout" />
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabOrder"
