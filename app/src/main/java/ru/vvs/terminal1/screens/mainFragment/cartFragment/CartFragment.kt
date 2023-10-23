@@ -6,10 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import ru.vvs.terminal1.MAIN
-import ru.vvs.terminal1.R
+import ru.vvs.terminal1.mainActivity
 import ru.vvs.terminal1.databinding.FragmentCartBinding
-import ru.vvs.terminal1.databinding.FragmentMainBinding
 import ru.vvs.terminal1.model.CartItem
 
 class CartFragment : Fragment() {
@@ -35,7 +33,7 @@ class CartFragment : Fragment() {
     }
 
     private fun init() {
-        MAIN.actionBar.title = "Карточка товара"
+        mainActivity.actionBar.title = "Карточка товара"
 
         val viewModel = ViewModelProvider(this).get(CartViewModel::class.java)
 

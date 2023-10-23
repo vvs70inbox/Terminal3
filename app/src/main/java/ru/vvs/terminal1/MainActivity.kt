@@ -2,15 +2,14 @@ package ru.vvs.terminal1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
+import android.util.Log
 import androidx.appcompat.app.ActionBar
-import androidx.appcompat.widget.SearchView
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.android.gms.common.moduleinstall.ModuleInstall
+import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import ru.vvs.terminal1.databinding.ActivityMainBinding
-import ru.vvs.terminal1.model.CartItem
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,9 +22,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        MAIN = this
+        mainActivity = this
         navController = Navigation.findNavController(this, R.id.nav_fragment)
         actionBar = supportActionBar!!
+
+        val moduleInstall = ModuleInstall.getClient(this)
+        val moduleInstallRequest = ModuleInstallRequest.newBuilder()
+            .addApi(GmsBarcodeScanning.getClient(this))
+            .build()
+        moduleInstall
+            .installModules(moduleInstallRequest)
+            .addOnSuccessListener {
+                if (it.areModulesAlreadyInstalled()) {
+                    // Modules are already installed when the request is sent.
+                    Log.d("MLKit", "Module Loaded and Installed")
+                }
+            }
+            .addOnFailureListener {
+                // Handle failure…
+                Log.d("MLKit", "Module Not Loaded")
+            }
     }
 
     override fun onDestroy() {

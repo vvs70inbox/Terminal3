@@ -1,15 +1,12 @@
 package ru.vvs.terminal1.screens.startFragment
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.vvs.terminal1.MAIN
 import ru.vvs.terminal1.MainActivity
 import ru.vvs.terminal1.R
-import ru.vvs.terminal1.databinding.FragmentMainBinding
 import ru.vvs.terminal1.databinding.FragmentStartBinding
 
 class StartFragment : Fragment() {

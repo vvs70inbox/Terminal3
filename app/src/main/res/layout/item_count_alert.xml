@@ -11,12 +11,14 @@
         android:id="@+id/textViewAlert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
         android:text="Наименование"/>
     <EditText
         android:layout_marginTop="8dp"
         android:id="@+id/editTextAlert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
         android:hint="Ведите нужное количество"
         android:inputType="number"/>
 

@@ -1,6 +1,7 @@
 package ru.vvs.terminal1.screens.mainFragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -10,25 +11,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
+//import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
-
-import ru.vvs.terminal1.MAIN
+import ru.vvs.terminal1.mainActivity
 import ru.vvs.terminal1.R
 import ru.vvs.terminal1.databinding.FragmentMainBinding
 import ru.vvs.terminal1.model.CartItem
-import java.util.Locale
 
 class MainFragment : Fragment() {
 
@@ -44,7 +41,7 @@ class MainFragment : Fragment() {
 
     private var allowManualInput = false
     private var enableAutoZoom = true
-    private var barcodeResultView: TextView? = null
+    //private var barcodeResultView: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,8 +57,8 @@ class MainFragment : Fragment() {
     }
 
     private fun init() {
-        MAIN.actionBar.title = "Работа с картотекой"
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        mainActivity.actionBar.title = "Работа с картотекой"
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         recyclerView = binding.mainFragment
         adapter = MainAdapter()
@@ -100,7 +97,7 @@ class MainFragment : Fragment() {
             if (enableAutoZoom) {
                 optionsBuilder.enableAutoZoom()
             }
-            val gmsBarcodeScanner = GmsBarcodeScanning.getClient(requireContext(), optionsBuilder.build())
+            val gmsBarcodeScanner = GmsBarcodeScanning.getClient(requireContext(), optionsBuilder.build()) //
             gmsBarcodeScanner
                 .startScan()
                 .addOnSuccessListener { barcode: Barcode ->
@@ -109,7 +106,7 @@ class MainFragment : Fragment() {
                             when (cart.Barcode.substring(0, 2)) {
                                 "27" -> if (cart.Barcode == barcode.rawValue) clickMovie(cart)
                                 else -> Toast.makeText(
-                                    MAIN,
+                                    mainActivity,
                                     "Штрихкод начинается не на 27!",
                                     Toast.LENGTH_LONG
                                 ).show()
@@ -117,7 +114,7 @@ class MainFragment : Fragment() {
                         }
                         else
                         {Toast.makeText(
-                            MAIN,
+                            mainActivity,
                             "Штрихкод не обнаружен - товара нет!",
                             Toast.LENGTH_LONG
                         ).show()}
@@ -125,10 +122,10 @@ class MainFragment : Fragment() {
                     //поиск по barcode, возврат CartItem во ViewMidel
                     viewModel.getCartByBarcode(barcode.rawValue!!)
                 }
-                .addOnFailureListener { e: Exception -> barcodeResultView!!.text = getErrorMessage(e) }
+                .addOnFailureListener { e: Exception -> Log.d("MLKit",getErrorMessage(e)!!) }//barcodeResultView!!.text = getErrorMessage(e)
                 .addOnCanceledListener {
                     //barcodeResultView!!.text = getString(R.string.error_scanner_cancelled)
-                    Toast.makeText(MAIN, getString(R.string.error_scanner_cancelled), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(mainActivity, getString(R.string.error_scanner_cancelled), Toast.LENGTH_SHORT).show()
                 }
         }
 
@@ -154,6 +151,16 @@ class MainFragment : Fragment() {
                                 // calling a method to filter our recycler view.
                                 filter(msg)
                                 return false
+                            }
+                        })
+                        // обрабатываем кнопку возврата из поиска / processing the return button from the search
+                        menuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+                            override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                                return true
+                            }
+                            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                                adapter.filterRemove()
+                                return true
                             }
                         })
                     }
@@ -183,7 +190,7 @@ class MainFragment : Fragment() {
         if (filteredlist.isEmpty()) {
             // if no item is added in filtered list we are
             // displaying a toast message as no data found.
-            Toast.makeText(MAIN, "No Data Found..", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mainActivity, "No Data Found..", Toast.LENGTH_SHORT).show()
         } else {
             // at last we are passing that filtered
             // list to our adapter class.
@@ -197,7 +204,7 @@ class MainFragment : Fragment() {
         menuHost.removeMenuProvider(provider)
     }
 
-    private fun getSuccessfulMessage(barcode: Barcode): String {
+/*    private fun getSuccessfulMessage(barcode: Barcode): String {
         val barcodeValue =
             String.format(
                 Locale.US,
@@ -208,7 +215,7 @@ class MainFragment : Fragment() {
                 barcode.valueType
             )
         return getString(R.string.barcode_result, barcodeValue)
-    }
+    }*/
 
     private fun getErrorMessage(e: Exception): String? {
         return if (e is MlKitException) {
@@ -228,7 +235,7 @@ class MainFragment : Fragment() {
         fun clickMovie(cart: CartItem) {
             val bundle = Bundle()
             bundle.putSerializable("cart", cart)
-            MAIN.navController.navigate(R.id.action_mainFragment_to_cartFragment, bundle)
+            mainActivity.navController.navigate(R.id.action_mainFragment_to_cartFragment, bundle)
         }
     }
 

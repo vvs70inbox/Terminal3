@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.vvs.terminal1.MAIN
 import ru.vvs.terminal1.data.DataRepository
 import ru.vvs.terminal1.data.room.CartsDatabase
 import ru.vvs.terminal1.model.CartItem

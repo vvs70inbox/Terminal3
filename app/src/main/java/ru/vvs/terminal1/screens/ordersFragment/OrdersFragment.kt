@@ -10,14 +10,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import ru.vvs.terminal1.MAIN
+import ru.vvs.terminal1.mainActivity
 import ru.vvs.terminal1.R
 import ru.vvs.terminal1.databinding.FragmentOrdersBinding
-import ru.vvs.terminal1.model.CartItem
 import ru.vvs.terminal1.model.Order
-import ru.vvs.terminal1.screens.mainFragment.MainAdapter
-import ru.vvs.terminal1.screens.mainFragment.MainFragment
-import ru.vvs.terminal1.screens.mainFragment.MainViewModel
 
 class OrdersFragment : Fragment() {
 
@@ -42,7 +38,7 @@ class OrdersFragment : Fragment() {
     }
 
     private fun init() {
-        MAIN.actionBar.title = "Работа с заказами"
+        mainActivity.actionBar.title = "Работа с заказами"
         viewModel = ViewModelProvider(this).get(OrdersViewModel::class.java)
 
         recyclerView = binding.ordersFragment
@@ -92,7 +88,7 @@ class OrdersFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 //TODO Вынести в утилиты
-                val alertDialog = AlertDialog.Builder(MAIN)
+                val alertDialog = AlertDialog.Builder(mainActivity)
                 alertDialog.apply {
                     setIcon(R.drawable.baseline_delete_24)
                     setTitle("Удаление заказа")
@@ -159,7 +155,7 @@ class OrdersFragment : Fragment() {
         fun clickOrder(order: Order) {
             val bundle = Bundle()
             bundle.putSerializable("order", order)
-            MAIN.navController.navigate(R.id.action_ordersFragment_to_orderFragment, bundle)
+            mainActivity.navController.navigate(R.id.action_ordersFragment_to_orderFragment, bundle)
         }
     }
 

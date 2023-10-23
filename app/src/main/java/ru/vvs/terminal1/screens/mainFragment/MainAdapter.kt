@@ -12,6 +12,7 @@ import ru.vvs.terminal1.model.CartItem
 class MainAdapter: RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
     var listMain = emptyList<CartItem>()
+    private var listMainFull = emptyList<CartItem>()
 
     class MainViewHolder(view: View): RecyclerView.ViewHolder(view)
 
@@ -25,6 +26,14 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
         // below line is to add our filtered
         // list in our course array list.
         listMain = filterlist
+        // below line is to notify our adapter
+        // as change in recycler view data.
+        notifyDataSetChanged()
+    }
+    fun filterRemove() {
+        // below line is to add our filtered
+        // list in our course array list.
+        listMain = listMainFull
         // below line is to notify our adapter
         // as change in recycler view data.
         notifyDataSetChanged()
@@ -45,6 +54,7 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
     @SuppressLint("NotifyDataSetChanged")
     fun setList(list: List<CartItem>) {
         listMain = list
+        listMainFull = list
         notifyDataSetChanged()
     }
 

@@ -1,33 +1,31 @@
 package ru.vvs.terminal1.screens.ordersFragment.orderFragment
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
-import androidx.recyclerview.widget.RecyclerView.RecyclerListener
-import androidx.recyclerview.widget.RecyclerView.SimpleOnItemTouchListener
-import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
-import ru.vvs.terminal1.MAIN
+import ru.vvs.terminal1.mainActivity
 import ru.vvs.terminal1.R
 import ru.vvs.terminal1.databinding.FragmentOrderBinding
-import ru.vvs.terminal1.model.ItemsOrder
 import ru.vvs.terminal1.model.Order
 
 class OrderFragment : Fragment() {
@@ -38,6 +36,9 @@ class OrderFragment : Fragment() {
     private lateinit var viewModel: OrderViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: OrderAdapter
+
+    private lateinit var menuHost: MenuHost
+    private lateinit var provider: MenuProvider
 
     lateinit var currentOrder: Order
 
@@ -60,9 +61,9 @@ class OrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
     }
-    private fun toast(text: String) = Toast.makeText(MAIN, text, Toast.LENGTH_SHORT).show()
+    private fun toast(text: String) = Toast.makeText(mainActivity, text, Toast.LENGTH_SHORT).show()
     private fun init() {
-        MAIN.actionBar.title = "Работа с заказом"
+        mainActivity.actionBar.title = "Работа с заказом"
         viewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
 
         recyclerView = binding.itemsOrderLayout
@@ -94,7 +95,7 @@ class OrderFragment : Fragment() {
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
-                val alertDialog = AlertDialog.Builder(MAIN)
+                val alertDialog = AlertDialog.Builder(mainActivity)
 
                 alertDialog.apply {
                     setIcon(R.drawable.baseline_delete_24)
@@ -150,6 +151,24 @@ class OrderFragment : Fragment() {
 
         }).attachToRecyclerView(recyclerView)
 
+        menuHost = requireActivity()
+        provider = object : MenuProvider {
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_unload, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.actionUnload -> {
+                    }
+                }
+                return true
+            }
+        }
+        menuHost.addMenuProvider(provider)
+
+
         binding.fabOrder.setOnClickListener {
             val optionsBuilder = GmsBarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_EAN_13)
             if (allowManualInput) {
@@ -158,7 +177,7 @@ class OrderFragment : Fragment() {
             if (enableAutoZoom) {
                 optionsBuilder.enableAutoZoom()
             }
-            val gmsBarcodeScanner = GmsBarcodeScanning.getClient(requireContext(), optionsBuilder.build())
+            val gmsBarcodeScanner = GmsBarcodeScanning.getClient(mainActivity, optionsBuilder.build())//requireContext(), optionsBuilder.build())
             gmsBarcodeScanner
                 .startScan()
                 .addOnSuccessListener { barcode: Barcode ->
@@ -168,13 +187,13 @@ class OrderFragment : Fragment() {
                             viewModel.updateItem(barcode.rawValue!!, currentOrder.id)
                             //if (cart.Barcode == barcode.rawValue) Toast.makeText(MAIN, "ВСЁ ОК!!!!!", Toast.LENGTH_LONG).show()
                         }
-                        else -> Toast.makeText(MAIN, "Штрихкод начинается не на 27!", Toast.LENGTH_LONG).show()
+                        else -> Toast.makeText(mainActivity, "Штрихкод начинается не на 27!", Toast.LENGTH_LONG).show()
                     }
                 }
-                .addOnFailureListener { e: Exception -> barcodeResultView!!.text = getErrorMessage(e) }
+                .addOnFailureListener { e: Exception -> getErrorMessage(e) } //barcodeResultView!!.text = getErrorMessage(e) }
                 .addOnCanceledListener {
                     //barcodeResultView!!.text = getString(R.string.error_scanner_cancelled)
-                    Toast.makeText(MAIN, getString(R.string.error_scanner_cancelled), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(mainActivity, getString(R.string.error_scanner_cancelled), Toast.LENGTH_SHORT).show()
                 }
         }
     }
@@ -197,49 +216,35 @@ class OrderFragment : Fragment() {
         super.onDestroyView()
         viewModel.updateOrder(currentOrder)
         mBinding = null
+        menuHost.removeMenuProvider(provider)
     }
 
     private fun onItemClick(position: Int) {
         //toast(adapter.listMain[position].Product)
         val itemsOrder = adapter.listMain[position]
-        val builder = AlertDialog.Builder(MAIN)
-        val inflater = MAIN.layoutInflater
+        val builder = AlertDialog.Builder(mainActivity)
+        val inflater = mainActivity.layoutInflater
         val oldCounts = itemsOrder.counts
+        var newCounts: Int = 0
 
-        builder.setTitle("With EditText")
+
+        builder.setTitle("Укажите нужное количество")
         val dialogLayout = inflater.inflate(R.layout.item_count_alert, null)
         dialogLayout.findViewById<TextView>(R.id.textViewAlert).text = itemsOrder.Product
         val editText  = dialogLayout.findViewById<EditText>(R.id.editTextAlert)
         builder.setView(dialogLayout)
         builder.setPositiveButton("OK") { dialogInterface, i ->
-            val newCounts = editText.text.toString().toInt()
+
+            if (editText.text.toString().dropWhile { it == ' ' }.length == 0) {
+                newCounts = oldCounts}
+            else {
+                newCounts = editText.text.toString().toInt()
+            }
+
             if (oldCounts != newCounts && newCounts != 0) {
                 viewModel.updateItemCount(itemsOrder, currentOrder.id, newCounts)
             }
         }
         builder.show()
     }
-
-/*    companion object {
-        @SuppressLint("MissingInflatedId")
-        fun clickItem(itemsOrder: ItemsOrder) {
-            val builder = AlertDialog.Builder(MAIN)
-            val inflater = MAIN.layoutInflater
-            val oldCounts = itemsOrder.counts
-
-            builder.setTitle("With EditText")
-            val dialogLayout = inflater.inflate(R.layout.item_count_alert, null)
-            dialogLayout.findViewById<TextView>(R.id.textViewAlert).text = itemsOrder.Product
-            val editText  = dialogLayout.findViewById<EditText>(R.id.editTextAlert)
-            builder.setView(dialogLayout)
-            builder.setPositiveButton("OK") { dialogInterface, i ->
-                val newCounts = editText.text.toString().toInt()
-                if (oldCounts != newCounts && newCounts != 0) {
-                    view
-                }
-            }
-            builder.show()
-        }
-    }*/
-
 }
