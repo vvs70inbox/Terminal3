@@ -74,6 +74,10 @@ class OrderFragment : Fragment() {
         binding.orderDate.text = currentOrder.date
         binding.orderNote.text = currentOrder.name
 
+        binding.orderPositions.text = currentOrder.positions.toString()
+        binding.orderAmount.text = currentOrder.amount.toString()
+        binding.orderProducts.text = currentOrder.products.toString()
+
         viewModel.itemOrder.observe(viewLifecycleOwner) { } // снимаем наблюдение
         viewModel.itemOrder = MutableLiveData()
 
