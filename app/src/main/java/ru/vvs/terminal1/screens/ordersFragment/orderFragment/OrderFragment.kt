@@ -165,6 +165,7 @@ class OrderFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.actionUnload -> {
+                        viewModel.createOrderIn1C()
                     }
                 }
                 return true
