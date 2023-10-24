@@ -38,7 +38,8 @@ class CartFragment : Fragment() {
         val viewModel = ViewModelProvider(this).get(CartViewModel::class.java)
 
         binding.cartGroup.text = currentCart.GroupString.substringBeforeLast("/").substringAfterLast("/")
-        binding.cartName.text = currentCart.Product
+        binding.cartName.text = currentCart.Product.substringBefore(",")
+        binding.cartNameEnglish.text = currentCart.Product.substringAfter(",").trim()
         binding.cartCharacter.text = currentCart.Character
         binding.cartBarcode.text = currentCart.Barcode
         binding.cartQuantity.text = currentCart.Quantity.toString()

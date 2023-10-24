@@ -45,7 +45,8 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         holder.itemView.findViewById<TextView>(R.id.item_name).text = listMain[position].GroupString.substringAfter("/")
-        holder.itemView.findViewById<TextView>(R.id.item_buy).text = listMain[position].Product
+        holder.itemView.findViewById<TextView>(R.id.item_buy).text = listMain[position].Product.substringBefore(",")
+        holder.itemView.findViewById<TextView>(R.id.item_english).text = listMain[position].Product.substringAfter(",").trim()
         holder.itemView.findViewById<TextView>(R.id.item_character).text = listMain[position].Character
         holder.itemView.findViewById<TextView>(R.id.item_count).text = listMain[position].Quantity.toString()
         holder.itemView.findViewById<TextView>(R.id.item_price).text = listMain[position].Price.toString()

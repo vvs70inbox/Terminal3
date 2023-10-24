@@ -15,18 +15,6 @@
         android:layout_marginTop="24dp">
 
         <TextView
-            android:id="@+id/cartHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/hello_blank_fragment"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/cartGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +24,7 @@
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cartHeader" />
+            app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/cartName"
             android:layout_width="wrap_content"
@@ -44,9 +32,20 @@
             android:layout_marginTop="16dp"
             android:text="Product"
             android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cartGroup" />
+        <TextView
+            android:id="@+id/cartNameEnglish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Product English"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cartName" />
 
         <TextView
             android:id="@+id/cartCharacter"
@@ -57,7 +56,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cartName" />
+            app:layout_constraintTop_toBottomOf="@+id/cartNameEnglish" />
 
         <TextView
             android:id="@+id/cartBarcode"
@@ -74,7 +73,7 @@
             android:id="@+id/dataContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cartBarcode">
