@@ -104,9 +104,15 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
                     // Делаем что-то с созданным заказом
                 } else {
                     Log.e("createOrderIn1C", "Failed to create order.")
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(mainActivity, "Заказ не передан в 1С", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("createOrderIn1C", "Error occurred: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(mainActivity, "Error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
