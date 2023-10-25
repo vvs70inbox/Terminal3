@@ -166,11 +166,7 @@ class MainFragment : Fragment() {
                         })
                     }
                     R.id.actionUpdate -> {
-                        if (MainActivity.isOnline(mainActivity)) {
-                            viewModel.getCarts(true)
-                        } else {
-                            Toast.makeText(mainActivity, "Отсутствует интернет!!!", Toast.LENGTH_LONG).show()
-                        }
+                        viewModel.getCarts(true)
                     }
                 }
                 return true

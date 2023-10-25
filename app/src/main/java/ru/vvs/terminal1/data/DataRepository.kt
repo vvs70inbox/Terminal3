@@ -1,7 +1,12 @@
 package ru.vvs.terminal1.data
 
+import android.widget.Toast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import ru.vvs.terminal1.MainActivity
 import ru.vvs.terminal1.data.retrofit.api.RetrofitInstance
 import ru.vvs.terminal1.data.room.dao.CartsDao
+import ru.vvs.terminal1.mainActivity
 import ru.vvs.terminal1.model.CartItem
 
 class DataRepository(private val cartsDao: CartsDao) {
@@ -11,10 +16,17 @@ class DataRepository(private val cartsDao: CartsDao) {
         return if (cachedCarts.isNotEmpty() && !newList) {
             cachedCarts
         } else {
-            val newCarts = RetrofitInstance.api.getCarts()
-            cartsDao.clearTable()
-            cartsDao.insertAll(newCarts)
-            newCarts
+            if (MainActivity.isOnline(mainActivity)) {
+                val newCarts = RetrofitInstance.api.getCarts()
+                cartsDao.clearTable()
+                cartsDao.insertAll(newCarts)
+                newCarts
+            } else {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(mainActivity, "Отсутствует интернет!!!", Toast.LENGTH_LONG).show()
+                }
+                cachedCarts
+            }
         }
     }
 
