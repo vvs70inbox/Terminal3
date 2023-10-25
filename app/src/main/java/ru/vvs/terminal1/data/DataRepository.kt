@@ -34,6 +34,10 @@ class DataRepository(private val cartsDao: CartsDao) {
         return cartsDao.getCartByBarcode(barcode)
     }
 
+    suspend fun getCartsByProduct(product: String): List<CartItem> {
+        return cartsDao.getCartsByProduct(product)
+    }
+
 /*   Так рекомендуют
     suspend fun getPosts(): List<Post> {
         if (postDao.getPosts().isEmpty()) {

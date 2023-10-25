@@ -6,15 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import ru.vvs.terminal1.mainActivity
 import ru.vvs.terminal1.databinding.FragmentCartBinding
 import ru.vvs.terminal1.model.CartItem
+import ru.vvs.terminal1.screens.ordersFragment.orderFragment.OrderAdapter
 
 class CartFragment : Fragment() {
 
     private var mBinding: FragmentCartBinding?= null
     private val binding get() = mBinding!!
     lateinit var currentCart: CartItem
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: CartAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +41,15 @@ class CartFragment : Fragment() {
         mainActivity.actionBar.title = "Карточка товара"
 
         val viewModel = ViewModelProvider(this).get(CartViewModel::class.java)
+
+        recyclerView = binding.itemsCharacterLayout
+        adapter = CartAdapter()
+        recyclerView.adapter = adapter
+
+        viewModel.getItems(currentCart.Product)
+        viewModel.myItemsList.observe(viewLifecycleOwner) { list ->
+            adapter.setList(list)
+        }
 
         binding.cartGroup.text = currentCart.GroupString.substringBeforeLast("/").substringAfterLast("/")
         binding.cartName.text = currentCart.Product.substringBefore(",")

@@ -16,4 +16,5 @@
     <string name="error_internet" translatable="false">Отсутствует интернет!!!</string>
     <string name="message_order_to_1c">Заказ передан в 1С</string>
     <string name="message_order_not_send_to_1c">Заказ не передан в 1С</string>
+    <string name="tab_layout">Tab layout</string>
 </resources>

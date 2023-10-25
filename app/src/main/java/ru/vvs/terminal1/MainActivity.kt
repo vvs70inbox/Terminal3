@@ -2,6 +2,7 @@ package ru.vvs.terminal1
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.InetAddresses
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,8 @@ import com.google.android.gms.common.moduleinstall.ModuleInstall
 import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import ru.vvs.terminal1.databinding.ActivityMainBinding
+import java.io.IOException
+import java.net.InetAddress
 
 class MainActivity : AppCompatActivity() {
 
@@ -62,15 +65,25 @@ class MainActivity : AppCompatActivity() {
                 if (capabilities != null) {
                     if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
                         Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
-                        return true
+                        return true //pingHost("91.230.197.241")
                     } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
                         Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
-                        return true
+                        return true //pingHost("91.230.197.241")
                     } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
                         Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
-                        return true
+                        return true //pingHost("91.230.197.241")
                     }
                 }
+            }
+            return false
+        }
+        private fun pingHost(ipAddress: String): Boolean {
+            //val ipAddress = "www.google.com"
+            try {
+                val inet = InetAddress.getByName(ipAddress)
+                return inet.isReachable(1000)
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
             return false
         }

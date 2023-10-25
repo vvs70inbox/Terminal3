@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="12dp"
-    android:fillViewport="true"
-    tools:context=".screens.mainFragment.cartFragment.CartFragment">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp">
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:fillViewport="true"
+        tools:context=".screens.mainFragment.cartFragment.CartFragment">
 
         <TextView
             android:id="@+id/cartGroup"
@@ -102,12 +97,23 @@
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintTop_toBottomOf="@id/cartTextProduction"/>
 
+            <TextView
+                android:id="@+id/cartTextPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Цена"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cartTextReserve" />
+
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/startBarrier"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="end"
-                app:constraint_referenced_ids="cartTextQuantity,cartTextProduction,cartTextReserve"/>
+                app:constraint_referenced_ids="cartTextQuantity,cartTextProduction,cartTextReserve,cartTextPrice"/>
 
             <TextView
                 android:id="@+id/cartQuantity"
@@ -133,29 +139,36 @@
                 app:layout_constraintStart_toStartOf="@id/startBarrier"
                 app:layout_constraintTop_toTopOf="@id/cartTextReserve"/>
 
+            <TextView
+                android:id="@+id/cartPrice"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Price"
+                android:gravity="end"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/startBarrier" 
+                app:layout_constraintTop_toTopOf="@+id/cartTextPrice" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/cartTextPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Цена"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/dataContainer"
-            app:layout_constraintTop_toBottomOf="@+id/dataContainer" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dataContainer">
 
-        <TextView
-            android:id="@+id/cartPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Price"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/dataContainer"
-            app:layout_constraintTop_toBottomOf="@+id/dataContainer" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/itemsCharacterLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_character_layout"
+                tools:itemCount="5"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+        </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

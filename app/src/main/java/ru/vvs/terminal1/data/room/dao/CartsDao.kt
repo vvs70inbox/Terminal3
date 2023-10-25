@@ -21,4 +21,8 @@ interface CartsDao: BaseDao<CartItem> {
 
     @Query("SELECT * from carts_table WHERE Barcode = :barcode")
     suspend fun getCartByBarcode(barcode: String): CartItem
+
+    @Query("SELECT * from carts_table WHERE Product = :product")
+    suspend fun getCartsByProduct(product: String): List<CartItem>
+
 }
