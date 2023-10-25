@@ -182,7 +182,7 @@ class OrderFragment : Fragment() {
             if (enableAutoZoom) {
                 optionsBuilder.enableAutoZoom()
             }
-            val gmsBarcodeScanner = GmsBarcodeScanning.getClient(mainActivity, optionsBuilder.build())//requireContext(), optionsBuilder.build())
+            val gmsBarcodeScanner = GmsBarcodeScanning.getClient(mainActivity, optionsBuilder.build())
             gmsBarcodeScanner
                 .startScan()
                 .addOnSuccessListener { barcode: Barcode ->

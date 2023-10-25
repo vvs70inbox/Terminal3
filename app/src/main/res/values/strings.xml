@@ -12,4 +12,8 @@
     <string name="error_camera_permission_not_granted" translatable="false">Camera permission is not granted.</string>
     <string name="error_app_name_unavailable" translatable="false">App name is not set.</string>
     <string name="error_default_message" translatable="false">Failed to scan code: %1$s</string>
+
+    <string name="error_internet" translatable="false">Отсутствует интернет!!!</string>
+    <string name="message_order_to_1c">Заказ передан в 1С</string>
+    <string name="message_order_not_send_to_1c">Заказ не передан в 1С</string>
 </resources>

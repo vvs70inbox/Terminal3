@@ -8,11 +8,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import ru.vvs.terminal1.MainActivity
+import ru.vvs.terminal1.R
 import ru.vvs.terminal1.data.ItemsRepository
 import ru.vvs.terminal1.data.retrofit.api.RetrofitInstance
 import ru.vvs.terminal1.data.room.CartsDatabase
@@ -87,7 +86,7 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
 
     fun createOrderIn1C() {
         if (!MainActivity.isOnline(mainActivity)) {
-            Toast.makeText(mainActivity, "Отсутствует интернет!!!", Toast.LENGTH_LONG).show()
+            Toast.makeText(mainActivity, mainActivity.getString(R.string.error_internet), Toast.LENGTH_LONG).show()
         } else {
             val order1C: MutableList<Order1C> = mutableListOf()
 
@@ -106,16 +105,16 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
                     if (response.isSuccessful) {
                         Log.d("createOrderIn1C", "Order created")
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(mainActivity, "Заказ передан в 1С", Toast.LENGTH_SHORT)
+                            Toast.makeText(mainActivity,
+                                mainActivity.getString(R.string.message_order_to_1c), Toast.LENGTH_SHORT)
                                 .show()
                         }
-                        // Делаем что-то с созданным заказом
                     } else {
                         Log.e("createOrderIn1C", "Failed to create order.")
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 mainActivity,
-                                "Заказ не передан в 1С",
+                                mainActivity.getString(R.string.message_order_not_send_to_1c),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
