@@ -22,6 +22,7 @@ import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
+import ru.vvs.terminal1.MainActivity
 import ru.vvs.terminal1.mainActivity
 import ru.vvs.terminal1.R
 import ru.vvs.terminal1.databinding.FragmentMainBinding
@@ -165,7 +166,11 @@ class MainFragment : Fragment() {
                         })
                     }
                     R.id.actionUpdate -> {
-                        viewModel.getCarts(true)
+                        if (MainActivity.isOnline(mainActivity)) {
+                            viewModel.getCarts(true)
+                        } else {
+                            Toast.makeText(mainActivity, "Отсутствует интернет!!!", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
                 return true
