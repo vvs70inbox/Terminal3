@@ -1,6 +1,7 @@
 package ru.vvs.terminal1
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.InetAddresses
 import android.net.NetworkCapabilities
@@ -13,9 +14,13 @@ import androidx.navigation.Navigation
 import com.google.android.gms.common.moduleinstall.ModuleInstall
 import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.vvs.terminal1.databinding.ActivityMainBinding
 import java.io.IOException
 import java.net.InetAddress
+import java.net.InetSocketAddress
+import java.net.Socket
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = mBinding!!
     lateinit var navController: NavController
     lateinit var actionBar: ActionBar
+
+    lateinit var settigs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,13 +86,21 @@ class MainActivity : AppCompatActivity() {
         }
         private fun pingHost(ipAddress: String): Boolean {
             //val ipAddress = "www.google.com"
-            try {
+/*            try {
                 val inet = InetAddress.getByName(ipAddress)
                 return inet.isReachable(1000)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-            return false
+            return false*/
+            return try {
+                val sock = Socket()
+                sock.connect(InetSocketAddress("91.230.197.241", 81), 1500)
+                sock.close()
+                true
+            } catch (e: IOException) {
+                false
+            }
         }
     }
 }

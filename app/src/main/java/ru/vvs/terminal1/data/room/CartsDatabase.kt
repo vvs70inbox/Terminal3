@@ -8,16 +8,20 @@ import ru.vvs.terminal1.data.room.dao.CartsDao
 import ru.vvs.terminal1.data.room.dao.DaoItemsOrder
 import ru.vvs.terminal1.data.room.dao.OrdersDao
 import ru.vvs.terminal1.data.room.dao.OrdersItemDao
+import ru.vvs.terminal1.data.room.dao.SalesDao
 import ru.vvs.terminal1.model.CartItem
 import ru.vvs.terminal1.model.ItemsOrder
 import ru.vvs.terminal1.model.Order
 import ru.vvs.terminal1.model.OrderItem
+import ru.vvs.terminal1.model.Sale
+import ru.vvs.terminal1.model.SaleItem
 
-@Database(entities = [CartItem::class,Order::class,OrderItem::class], version = 3)
+@Database(entities = [CartItem::class,Order::class,OrderItem::class, Sale::class, SaleItem::class], version = 4)
 abstract class CartsDatabase: RoomDatabase() {
 
     abstract fun getCartsDao(): CartsDao
     abstract fun getOrdersDao(): OrdersDao
+    abstract fun getSalesDao(): SalesDao
     abstract fun getAllOrdersItem(): OrdersItemDao
     abstract fun getAllItemsFromOrder(): DaoItemsOrder
 
