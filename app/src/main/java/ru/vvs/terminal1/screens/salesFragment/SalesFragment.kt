@@ -23,7 +23,7 @@ import java.util.Locale
 class SalesFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private val calendar = Calendar.getInstance()
-    private val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY)
+    private val formatter = SimpleDateFormat("yyyyMMdd", Locale.GERMANY)
 
     private var mBinding: FragmentSalesBinding?= null
     private val binding get() = mBinding!!
