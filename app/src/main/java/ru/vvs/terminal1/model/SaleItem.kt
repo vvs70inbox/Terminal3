@@ -13,5 +13,6 @@ data class SaleItem(
     @ColumnInfo(name = "order_id")
     val orderId: Int,
     val barcode: String,
-    var counts: Int
+    var counts: Int,
+    var price: Int
 )

@@ -14,5 +14,7 @@ data class Sale(
     val date: String,
     var positions: Int,
     var products: Int,
-    var amount: Int
+    var amount: Int,
+    var manager: String,
+    var comment: String
 ) : Serializable

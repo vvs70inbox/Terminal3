@@ -12,8 +12,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import ru.vvs.terminal1.data.retrofit.api.RetrofitInstance
 import ru.vvs.terminal1.databinding.FragmentSalesBinding
 import ru.vvs.terminal1.mainActivity
+import ru.vvs.terminal1.model.SaleImportItem
 import ru.vvs.terminal1.screens.ordersFragment.OrdersAdapter
 import ru.vvs.terminal1.screens.ordersFragment.OrdersFragment
 import ru.vvs.terminal1.screens.ordersFragment.OrdersViewModel
@@ -77,7 +81,13 @@ class SalesFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         }
 
         binding.fabSales.setOnClickListener {
-            DatePickerDialog(mainActivity, 0, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+            DatePickerDialog(
+                mainActivity,
+                0,
+                this,
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+
 /*            viewModel.newSale()
             viewModel.order.observe(viewLifecycleOwner) {order ->
                 OrdersFragment.clickOrder(order)
@@ -87,7 +97,8 @@ class SalesFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         calendar.set(year, month, dayOfMonth)
-        Toast.makeText(mainActivity,formatter.format(calendar.timeInMillis),Toast.LENGTH_LONG).show()
+        //Toast.makeText(mainActivity,formatter.format(calendar.timeInMillis),Toast.LENGTH_LONG).show()
+        viewModel.choiceSale(formatter.format(calendar.timeInMillis))
     }
 
 }

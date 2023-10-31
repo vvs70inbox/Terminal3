@@ -14,6 +14,8 @@ import retrofit2.http.Query
 import ru.vvs.terminal1.model.Cart
 import ru.vvs.terminal1.model.ItemsOrder
 import ru.vvs.terminal1.model.Order1C
+import ru.vvs.terminal1.model.SaleImport
+import ru.vvs.terminal1.model.SaleItem
 
 interface ApiService {
 
@@ -23,4 +25,9 @@ interface ApiService {
     @POST("upp2018/hs/nm/order")
     suspend fun postOrder(@Query("name") name: String, @Query("number") number: String, @Body items: List<Order1C>) : Response<ResponseBody>
 
+    @GET("upp2018/hs/nm/sale")
+    suspend fun getSales(@Query("date") dateStr: String) : SaleImport
+
+    @GET("upp2018/hs/nm/sale_items")
+    suspend fun getSaleItems(@Query("number") numberStr: String, @Query("date") dateStr: String) : List<SaleItem>
 }

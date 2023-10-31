@@ -9,6 +9,7 @@ import ru.vvs.terminal1.data.room.dao.DaoItemsOrder
 import ru.vvs.terminal1.data.room.dao.OrdersDao
 import ru.vvs.terminal1.data.room.dao.OrdersItemDao
 import ru.vvs.terminal1.data.room.dao.SalesDao
+import ru.vvs.terminal1.data.room.dao.SalesItemDao
 import ru.vvs.terminal1.model.CartItem
 import ru.vvs.terminal1.model.ItemsOrder
 import ru.vvs.terminal1.model.Order
@@ -22,6 +23,7 @@ abstract class CartsDatabase: RoomDatabase() {
     abstract fun getCartsDao(): CartsDao
     abstract fun getOrdersDao(): OrdersDao
     abstract fun getSalesDao(): SalesDao
+    abstract fun getSalesItemDao(): SalesItemDao
     abstract fun getAllOrdersItem(): OrdersItemDao
     abstract fun getAllItemsFromOrder(): DaoItemsOrder
 
