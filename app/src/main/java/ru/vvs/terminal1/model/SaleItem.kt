@@ -11,8 +11,9 @@ data class SaleItem(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     @ColumnInfo(name = "order_id")
-    val orderId: Int,
+    var orderId: Int,
     val barcode: String,
     var counts: Int,
+    var checks: Int,
     var price: Int
 )

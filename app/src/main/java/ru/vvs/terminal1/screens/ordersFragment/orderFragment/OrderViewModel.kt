@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.vvs.terminal1.MainActivity
 import ru.vvs.terminal1.R
-import ru.vvs.terminal1.data.ItemsRepository
+import ru.vvs.terminal1.data.ItemsOrderRepository
 import ru.vvs.terminal1.data.retrofit.api.RetrofitInstance
 import ru.vvs.terminal1.data.room.CartsDatabase
 import ru.vvs.terminal1.mainActivity
@@ -22,7 +22,7 @@ import ru.vvs.terminal1.model.Order1C
 
 class OrderViewModel(application: Application): AndroidViewModel(application) {
 
-    private val repository: ItemsRepository
+    private val repository: ItemsOrderRepository
 
     private var _myItemsList: MutableLiveData<List<ItemsOrder>> = MutableLiveData()
     val myItemsList: LiveData<List<ItemsOrder>> = _myItemsList
@@ -31,7 +31,7 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
 
     init {
         val itemsDao = CartsDatabase.getInstance(application).getAllItemsFromOrder()
-        repository = ItemsRepository(itemsDao)
+        repository = ItemsOrderRepository(itemsDao)
     }
 
     fun getItems(orderId: Int) {

@@ -14,9 +14,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.vvs.terminal1.R
 import ru.vvs.terminal1.data.retrofit.api.RetrofitInstance
 import ru.vvs.terminal1.databinding.FragmentSalesBinding
 import ru.vvs.terminal1.mainActivity
+import ru.vvs.terminal1.model.Order
+import ru.vvs.terminal1.model.Sale
 import ru.vvs.terminal1.model.SaleImportItem
 import ru.vvs.terminal1.screens.ordersFragment.OrdersAdapter
 import ru.vvs.terminal1.screens.ordersFragment.OrdersFragment
@@ -99,6 +102,14 @@ class SalesFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         calendar.set(year, month, dayOfMonth)
         //Toast.makeText(mainActivity,formatter.format(calendar.timeInMillis),Toast.LENGTH_LONG).show()
         viewModel.choiceSale(formatter.format(calendar.timeInMillis))
+    }
+
+    companion object {
+        fun clickSale(order: Sale) {
+            val bundle = Bundle()
+            bundle.putSerializable("order", order)
+            mainActivity.navController.navigate(R.id.action_salesFragment_to_saleFragment, bundle)
+        }
     }
 
 }

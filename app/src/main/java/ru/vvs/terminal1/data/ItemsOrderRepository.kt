@@ -5,7 +5,7 @@ import ru.vvs.terminal1.model.ItemsOrder
 import ru.vvs.terminal1.model.Order
 import ru.vvs.terminal1.model.OrderItem
 
-class ItemsRepository(private val itemsDao: DaoItemsOrder) {
+class ItemsOrderRepository(private val itemsDao: DaoItemsOrder) {
 
     suspend fun getItems(orderId: Int): List<ItemsOrder> {
         return itemsDao.getItemsOrder(orderId)

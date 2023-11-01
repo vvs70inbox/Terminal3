@@ -8,10 +8,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.vvs.terminal1.data.DataRepository
-import ru.vvs.terminal1.data.ItemsRepository
 import ru.vvs.terminal1.data.room.CartsDatabase
 import ru.vvs.terminal1.model.CartItem
-import ru.vvs.terminal1.model.ItemsOrder
 
 class CartViewModel(app: Application): AndroidViewModel(app) {
 

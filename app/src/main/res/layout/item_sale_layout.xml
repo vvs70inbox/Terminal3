@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp">
@@ -9,49 +10,52 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="8dp">
 
         <TextView
-            android:id="@+id/sale_name"
-            android:layout_width="wrap_content"
+            android:id="@+id/item_product_sale"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="№"
+            android:text="Product"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
-            android:id="@+id/sale_number"
+            android:id="@+id/item_character_sale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Character"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_product_sale"/>
+        <TextView
+            android:id="@+id/item_barcode_sale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Number"
+            android:text="Barcode"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_character_sale"/>
+
+        <TextView
+            android:id="@+id/item_price_sale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Price"
             android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/sale_name"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/item_count_sale"
+            app:layout_constraintStart_toEndOf="@id/item_barcode_sale"
+            app:layout_constraintTop_toBottomOf="@id/item_character_sale" />
 
         <TextView
-            android:id="@+id/sale_date"
+            android:id="@+id/item_count_sale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Date"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/sale_number"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/sale_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Amount"
+            android:text="Count"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintTop_toBottomOf="@id/item_character_sale" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.cardview.widget.CardView>
