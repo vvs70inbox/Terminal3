@@ -67,12 +67,17 @@ class SalesViewModel(application: Application): AndroidViewModel(application) {
     fun newSaleRecord(item: SaleImportItem) {
         Toast.makeText(mainActivity, "Выбранный заказ: ${item.numberSale}", Toast.LENGTH_SHORT).show()
         viewModelScope.launch(Dispatchers.IO) {
-            val newSaleItems = RetrofitInstance.api.getSaleItems(item.numberSale, item.dateSale)
+            val newSaleItems = RetrofitInstance.api.getSaleItems(item.numberSale, item.dateSale.substring(0..3))
             if (newSaleItems.size > 0) {
+/*
                 val sale = Sale(0, item.buyerSale, item.numberSale, item.dateSale, 0, 0, item.amoutSale, item.managerSale, item.commentSale)
                 repository.newSale(sale)
                 for (item in newSaleItems) {
 
+                }
+*/
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(mainActivity, "Выбран заказ - количество позиций ${newSaleItems.size}", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 withContext(Dispatchers.Main) {

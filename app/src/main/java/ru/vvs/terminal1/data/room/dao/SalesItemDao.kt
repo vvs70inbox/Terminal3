@@ -9,10 +9,10 @@ import ru.vvs.terminal1.model.SaleItem
 interface SalesItemDao: BaseDao<SaleItem> {
 
     @Query("SELECT * from sale_items_table WHERE order_id=:orderId")
-    suspend fun getAllSaleItems(orderId: Int): List<Sale>
+    suspend fun getAllSaleItems(orderId: Int): List<SaleItem>
 
     @Query("SELECT * from sale_items_table")
-    suspend fun getAllSalesItems(): List<Sale>
+    suspend fun getAllSalesItems(): List<SaleItem>
 
     @Query("SELECT MAX(id) from sale_items_table")
     suspend fun getCount(): Int
