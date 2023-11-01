@@ -11,6 +11,7 @@ import ru.vvs.terminal1.model.Order
 import ru.vvs.terminal1.model.Sale
 import ru.vvs.terminal1.screens.ordersFragment.OrdersAdapter
 import ru.vvs.terminal1.screens.ordersFragment.OrdersFragment
+import java.text.DecimalFormat
 
 class SalesAdapter: RecyclerView.Adapter<SalesAdapter.SalesViewHolder>() {
 
@@ -27,9 +28,12 @@ class SalesAdapter: RecyclerView.Adapter<SalesAdapter.SalesViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: SalesViewHolder, position: Int) {
+        val df = DecimalFormat("###,###")
         holder.itemView.findViewById<TextView>(R.id.sale_number).text = listMain[position].number
         holder.itemView.findViewById<TextView>(R.id.sale_date).text = "от ${listMain[position].date.substring(0..9)}"
-        holder.itemView.findViewById<TextView>(R.id.sale_amount).text = listMain[position].amount.toString()
+        holder.itemView.findViewById<TextView>(R.id.sale_amount).text = df.format(listMain[position].amount)
+        holder.itemView.findViewById<TextView>(R.id.sale_buyer).text = listMain[position].name
+        holder.itemView.findViewById<TextView>(R.id.sale_manager).text = listMain[position].manager
     }
 
     @SuppressLint("NotifyDataSetChanged")

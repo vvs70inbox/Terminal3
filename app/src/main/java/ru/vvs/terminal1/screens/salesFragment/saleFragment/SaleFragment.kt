@@ -51,7 +51,7 @@ class SaleFragment : Fragment() {
         recyclerView.adapter = adapter
 
         binding.saleNumber.text = currentSale.number
-        binding.saleDate.text = currentSale.date
+        binding.saleDate.text = currentSale.date.substring(0..9)
         binding.saleNote.text = currentSale.name
 
         binding.salePositions.text = currentSale.positions.toString()

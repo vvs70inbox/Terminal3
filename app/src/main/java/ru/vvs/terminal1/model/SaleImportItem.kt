@@ -1,5 +1,7 @@
 package ru.vvs.terminal1.model
 
+import java.text.DecimalFormat
+
 data class SaleImportItem(
     val amoutSale: Int,
     val buyerSale: String,
@@ -9,7 +11,8 @@ data class SaleImportItem(
     val numberSale: String
 ) {
     override fun toString(): String {
-        return numberSale+"|"+dateSale+"|"+buyerSale+"|"+amoutSale.toString()
+        val df = DecimalFormat("###,###")
+        return numberSale+" - "+dateSale.substring(0..9)+"\n"+buyerSale+"\nСумма - "+df.format(amoutSale)+"\n"
     }
 }
 

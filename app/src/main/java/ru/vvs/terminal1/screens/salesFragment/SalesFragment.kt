@@ -54,7 +54,7 @@ class SalesFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun init() {
-        mainActivity.actionBar.title = "Работа с заказами"
+        mainActivity.actionBar.title = "Работа с отгрузками"
         viewModel = ViewModelProvider(this).get(SalesViewModel::class.java)
 
         recyclerView = binding.salesFragment

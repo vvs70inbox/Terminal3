@@ -24,7 +24,7 @@
             android:id="@+id/sale_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="1dp"
             android:text="Number"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/sale_name"
@@ -34,7 +34,7 @@
             android:id="@+id/sale_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:text="Date"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/sale_number"
@@ -50,6 +50,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/sale_buyer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Amount"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sale_name" />
+
+        <TextView
+            android:id="@+id/sale_manager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Amount"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sale_buyer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

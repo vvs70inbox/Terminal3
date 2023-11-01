@@ -39,7 +39,7 @@ class SaleAdapter(private val onItemClick: (position: Int) -> Unit): RecyclerVie
 
     @SuppressLint("NotifyDataSetChanged")
     fun setList(list: List<ItemsSale>) {
-        listMain = list
+        listMain = list.sortedBy { it.Product }
         notifyDataSetChanged()
     }
 
