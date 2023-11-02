@@ -11,6 +11,7 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -90,12 +91,41 @@ class SalesFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 this,
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
             ).show()
-
 /*            viewModel.newSale()
             viewModel.order.observe(viewLifecycleOwner) {order ->
                 OrdersFragment.clickOrder(order)
             }*/
         }
+
+        ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                //TODO Вынести в утилиты
+                val alertDialog = AlertDialog.Builder(mainActivity)
+                alertDialog.apply {
+                    setIcon(R.drawable.baseline_delete_24)
+                    setTitle("Удаление отгрузки")
+                    setMessage("Вы уверены, что хотите удалить выбранную отгрузку?")
+                    setCancelable(false)
+                    setPositiveButton("ДА") { _, _ ->
+                        //toast("clicked positive button")
+                        viewModel.swipeItem(viewModel.mySalesList.value!!.get(viewHolder.adapterPosition) )
+                    }
+                    setNegativeButton("НЕТ") { _, _ ->
+                        //toast("clicked negative button")
+                        viewModel.getSales(false)
+                    }
+                }.create().show()
+            }
+
+        }).attachToRecyclerView(recyclerView)
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {

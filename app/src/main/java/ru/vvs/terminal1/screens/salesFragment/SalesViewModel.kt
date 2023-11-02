@@ -14,6 +14,7 @@ import ru.vvs.terminal1.data.SalesRepository
 import ru.vvs.terminal1.data.retrofit.api.RetrofitInstance
 import ru.vvs.terminal1.data.room.CartsDatabase
 import ru.vvs.terminal1.mainActivity
+import ru.vvs.terminal1.model.Order
 import ru.vvs.terminal1.model.Sale
 import ru.vvs.terminal1.model.SaleImportItem
 
@@ -44,7 +45,7 @@ class SalesViewModel(application: Application): AndroidViewModel(application) {
     fun choiceSale(format: String) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val newSales = RetrofitInstance.api.getSales(format)
+            val newSales = RetrofitInstance.api.getSales(format)?: return@launch
             var newSalesSting: Array<String> = emptyArray()
             for (item in newSales) {
                 newSalesSting += item.toString()
@@ -69,22 +70,46 @@ class SalesViewModel(application: Application): AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             val newSaleItems = RetrofitInstance.api.getSaleItems(item.numberSale, item.dateSale.substring(0..3))
             if (newSaleItems.size > 0) {
-                val counts = repository.countSales()+1
-                val sale = Sale(counts, item.buyerSale, item.numberSale, item.dateSale, 0, 0, item.amoutSale, item.managerSale, item.commentSale)
-                repository.newSale(sale)
-                for (item in newSaleItems) {
-                    item.orderId = counts
-                    repository.newSaleItem(item)
-                }
-                _mySalesList.postValue(repository.getSales(false))
-/*                withContext(Dispatchers.Main) {
+                // проверка на существование
+                if (repository.getSaleByNumberAndDate(item.numberSale,item.dateSale)) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(mainActivity, "Выбран заказ, который есть в базе!!! Нужно сначала удалить.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    val counts = repository.countSales() + 1
+                    val sale = Sale(
+                        counts,
+                        item.buyerSale,
+                        item.numberSale,
+                        item.dateSale,
+                        0,
+                        0,
+                        item.amoutSale,
+                        item.managerSale,
+                        item.commentSale
+                    )
+                    repository.newSale(sale)
+                    for (item in newSaleItems) {
+                        item.orderId = counts
+                        repository.newSaleItem(item)
+                    }
+                    _mySalesList.postValue(repository.getSales(false))
+                    /*                withContext(Dispatchers.Main) {
                     Toast.makeText(mainActivity, "Выбран заказ - количество позиций ${newSaleItems.size}", Toast.LENGTH_SHORT).show()
                 }*/
+                }
             } else {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(mainActivity, "Выбран заказ без товара!!!", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    fun swipeItem(sale: Sale) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteSale(sale)
+            getSales(false)
         }
     }
 }

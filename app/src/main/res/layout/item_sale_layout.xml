@@ -42,9 +42,17 @@
             android:layout_marginStart="16dp"
             android:text="Price"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/item_count_sale"
-            app:layout_constraintStart_toEndOf="@id/item_barcode_sale"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/item_character_sale" />
+
+        <TextView
+            android:id="@+id/item_countText_sale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="В заказе - "
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_barcode_sale" />
 
         <TextView
             android:id="@+id/item_count_sale"
@@ -53,8 +61,28 @@
             android:text="Count"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/item_countText_sale"
+            app:layout_constraintTop_toBottomOf="@id/item_barcode_sale" />
+
+        <TextView
+            android:id="@+id/item_checkText_sale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Проверено - "
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/item_check_sale"
+            app:layout_constraintTop_toBottomOf="@id/item_barcode_sale" />
+
+        <TextView
+            android:id="@+id/item_check_sale"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:text="Count"
+            android:gravity="end"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_character_sale" />
+            app:layout_constraintTop_toBottomOf="@id/item_barcode_sale" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

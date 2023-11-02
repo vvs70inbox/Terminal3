@@ -7,9 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.google.mlkit.common.MlKitException
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import ru.vvs.terminal1.R
 import ru.vvs.terminal1.databinding.FragmentSaleBinding
 import ru.vvs.terminal1.mainActivity
@@ -25,6 +30,9 @@ class SaleFragment : Fragment() {
     private lateinit var adapter: SaleAdapter
 
     lateinit var currentSale: Sale
+
+    private var allowManualInput = false
+    private var enableAutoZoom = false //true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,7 +74,48 @@ class SaleFragment : Fragment() {
             currentOrder.positions = list.count()*/
         }
 
+        binding.fabSale.setOnClickListener {
+            val optionsBuilder = GmsBarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_EAN_13)
+            if (allowManualInput) {
+                optionsBuilder.allowManualInput()
+            }
+            if (enableAutoZoom) {
+                optionsBuilder.enableAutoZoom()
+            }
+            val gmsBarcodeScanner = GmsBarcodeScanning.getClient(mainActivity, optionsBuilder.build())
+            gmsBarcodeScanner
+                .startScan()
+                .addOnSuccessListener { barcode: Barcode ->
+                    when (barcode.rawValue!!.substring(0, 2)) {
+                        "27" -> // изменяем кол-во
+                        {
+                            viewModel.updateItem(barcode.rawValue!!, currentSale.id)
+                            //if (cart.Barcode == barcode.rawValue) Toast.makeText(MAIN, "ВСЁ ОК!!!!!", Toast.LENGTH_LONG).show()
+                        }
+                        else -> Toast.makeText(mainActivity, "Штрихкод начинается не на 27!", Toast.LENGTH_LONG).show()
+                    }
+                }
+                .addOnFailureListener { e: Exception -> getErrorMessage(e) } //barcodeResultView!!.text = getErrorMessage(e) }
+                .addOnCanceledListener {
+                    //barcodeResultView!!.text = getString(R.string.error_scanner_cancelled)
+                    Toast.makeText(mainActivity, getString(R.string.error_scanner_cancelled), Toast.LENGTH_SHORT).show()
+                }
+        }
 
+    }
+
+    private fun getErrorMessage(e: Exception): String? {
+        return if (e is MlKitException) {
+            when (e.errorCode) {
+                MlKitException.CODE_SCANNER_CAMERA_PERMISSION_NOT_GRANTED ->
+                    getString(R.string.error_camera_permission_not_granted)
+                MlKitException.CODE_SCANNER_APP_NAME_UNAVAILABLE ->
+                    getString(R.string.error_app_name_unavailable)
+                else -> getString(R.string.error_default_message, e)
+            }
+        } else {
+            e.message
+        }
     }
 
 
@@ -75,11 +124,11 @@ class SaleFragment : Fragment() {
         val itemsOrder = adapter.listMain[position]
         val builder = AlertDialog.Builder(mainActivity)
         val inflater = mainActivity.layoutInflater
-        val oldCounts = itemsOrder.counts
+        val oldCounts = itemsOrder.checks
         var newCounts = 0
 
 
-        builder.setTitle("Укажите нужное количество")
+        builder.setTitle("Укажите проверенное количество")
         val dialogLayout = inflater.inflate(R.layout.item_count_alert, null)
         dialogLayout.findViewById<TextView>(R.id.textViewAlert).text = itemsOrder.Product
         val editText  = dialogLayout.findViewById<EditText>(R.id.editTextAlert)
@@ -93,7 +142,7 @@ class SaleFragment : Fragment() {
             }
 
             if (oldCounts != newCounts && newCounts != 0) {
-                //viewModel.updateItemCount(itemsOrder, currentSale.id, newCounts)
+                viewModel.updateItemCount(itemsOrder, currentSale.id, newCounts)
             }
         }
         builder.show()

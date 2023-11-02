@@ -34,24 +34,23 @@ class ItemsSaleRepository(private val itemsDao: DaoItemsSale) {
 
     suspend fun updateItem(barcode: String, orderId: Int) : ItemsSale {
 
-        var itemOrder = getItemSaleByBarcode(barcode, orderId)
-        itemOrder.counts +=1
-        val item = SaleItem(itemOrder.id, orderId, barcode, itemOrder.counts, itemOrder.checks, itemOrder.price)
+        var itemSale = getItemSaleByBarcode(barcode, orderId)
+        itemSale.checks +=1
+        //val item = SaleItem(itemOrder.id, orderId, barcode, itemOrder.counts, itemOrder.checks, itemOrder.price)
 
-        itemsDao.UpdateItem(item)
-        val itemsOrder = itemsDao.getItemByBarcode(barcode, orderId)
+        itemsDao.UpdateItem(itemSale)
+        val itemsSale = itemsDao.getItemByBarcode(barcode, orderId)
 
-        return itemsOrder
+        return itemsSale
     }
 
-    suspend fun updateItemCount(itemsOrder: ItemsOrder, orderId: Int) {
+    suspend fun updateItemCount(itemsSale: ItemsSale, orderId: Int) {
 
-        var itemOrder = getItemSaleByBarcode(itemsOrder.Barcode, orderId)
-        itemOrder.counts = itemsOrder.counts
-        val item = SaleItem(itemOrder.id, orderId, itemsOrder.Barcode, itemOrder.counts, itemOrder.checks, itemOrder.price)
+        var itemSale = getItemSaleByBarcode(itemsSale.Barcode, orderId)
+        itemSale.checks = itemsSale.checks
+        //val item = SaleItem(itemSale.id, orderId, itemsSale.Barcode, itemSale.counts, itemSale.checks, itemSale.price)
 
-        itemsDao.UpdateItem(item)
-
+        itemsDao.UpdateItem(itemSale)
     }
 
     suspend fun deleteItem(barcode: String, orderId: Int) {

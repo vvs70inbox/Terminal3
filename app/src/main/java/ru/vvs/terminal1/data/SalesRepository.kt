@@ -11,6 +11,11 @@ class SalesRepository(private val salesDao: SalesDao, private val salesItemDao: 
         return salesDao.getAllSales()
     }
 
+    suspend fun getSaleByNumberAndDate(number: String, date: String): Boolean {
+        val sale = salesDao.getSale(number, date)?: return false
+        return true
+    }
+
     suspend fun newSale(sale: Sale) {
         salesDao.insert(sale)
     }

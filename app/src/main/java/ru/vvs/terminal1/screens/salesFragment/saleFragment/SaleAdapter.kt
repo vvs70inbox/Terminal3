@@ -1,6 +1,7 @@
 package ru.vvs.terminal1.screens.salesFragment.saleFragment
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,14 @@ class SaleAdapter(private val onItemClick: (position: Int) -> Unit): RecyclerVie
         holder.itemView.findViewById<TextView>(R.id.item_barcode_sale).text = listMain[position].Barcode
         holder.itemView.findViewById<TextView>(R.id.item_price_sale).text = listMain[position].Price.toString()
         holder.itemView.findViewById<TextView>(R.id.item_count_sale).text = listMain[position].counts.toString()
-        //holder.itemView.findViewById<TextView>(R.id.item_count_sale).text = listMain[position].checks.toString()
+        holder.itemView.findViewById<TextView>(R.id.item_check_sale).text = listMain[position].checks.toString()
+        if (listMain[position].counts <= listMain[position].checks ) {
+            holder.itemView.findViewById<TextView>(R.id.item_checkText_sale)
+                .setTextColor(Color.parseColor("#ffcc33"))
+        } else {
+            holder.itemView.findViewById<TextView>(R.id.item_checkText_sale)
+                .setTextColor(Color.parseColor("#000000"))
+        }
     }
 
     override fun getItemCount(): Int {
