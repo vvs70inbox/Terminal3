@@ -71,7 +71,7 @@ class SalesViewModel(application: Application): AndroidViewModel(application) {
             val newSaleItems = RetrofitInstance.api.getSaleItems(item.numberSale, item.dateSale.substring(0..3))
             if (newSaleItems.size > 0) {
                 // проверка на существование
-                if (repository.getSaleByNumberAndDate(item.numberSale,item.dateSale)) {
+                if (repository.getSaleByNumberAndDate(item.numberSale, item.dateSale.substring(0 until 4))) {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(mainActivity, "Выбран заказ, который есть в базе!!! Нужно сначала удалить.", Toast.LENGTH_SHORT).show()
                     }

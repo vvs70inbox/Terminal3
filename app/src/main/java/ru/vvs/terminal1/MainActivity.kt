@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var navController: NavController
     lateinit var actionBar: ActionBar
 
-    lateinit var settigs: SharedPreferences
+    lateinit var settings: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
