@@ -7,55 +7,79 @@
     android:layout_height="wrap_content"
     android:layout_margin="3dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.chauthai.swipereveallayout.SwipeRevealLayout
+        android:id="@+id/swipe_reveal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        app:dragEdge="right"
+        app:mode="same_level">
 
-        <TextView
-            android:id="@+id/item_product_order"
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/delete_button"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@android:color/holo_red_dark"
+                android:textColor="@android:color/white"
+                android:text="Удалить"/>
+        </FrameLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Product"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <TextView
-            android:id="@+id/item_character_order"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Character"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_product_order"/>
-        <TextView
-            android:id="@+id/item_barcode_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Barcode"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_character_order"/>
+            android:padding="8dp">
 
-        <TextView
-            android:id="@+id/item_price_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="Price"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/item_count_order"
-            app:layout_constraintStart_toEndOf="@id/item_barcode_order"
-            app:layout_constraintTop_toBottomOf="@id/item_character_order" />
+            <TextView
+                android:id="@+id/item_product_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Product"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/item_character_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Character"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_product_order"/>
+            <TextView
+                android:id="@+id/item_barcode_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Barcode"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_character_order"/>
 
-        <TextView
-            android:id="@+id/item_count_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Count"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_character_order" />
+            <TextView
+                android:id="@+id/item_price_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Price"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/item_count_order"
+                app:layout_constraintStart_toEndOf="@id/item_barcode_order"
+                app:layout_constraintTop_toBottomOf="@id/item_character_order" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/item_count_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Count"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_character_order" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.chauthai.swipereveallayout.SwipeRevealLayout>
 
 </androidx.cardview.widget.CardView>

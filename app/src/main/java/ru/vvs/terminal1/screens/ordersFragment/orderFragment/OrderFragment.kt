@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.MutableLiveData
@@ -67,7 +66,7 @@ class OrderFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(OrderViewModel::class.java)
 
         recyclerView = binding.itemsOrderLayout
-        adapter = OrderAdapter() {position -> onItemClick(position)}
+        adapter = OrderAdapter({pos -> onItemClick(pos)}, {pos -> onItemDelete(pos)})
         recyclerView.adapter = adapter
 
         binding.orderNumber.text = currentOrder.number
@@ -108,7 +107,7 @@ class OrderFragment : Fragment() {
                     setCancelable(false)
                     setPositiveButton("ДА") { _, _ ->
                         //toast("clicked positive button")
-                        viewModel.swipeItem(viewHolder.adapterPosition, currentOrder.id)
+                        viewModel.deleteItem(viewHolder.adapterPosition, currentOrder.id)
                     }
                     setNegativeButton("НЕТ") { _, _ ->
                         //toast("clicked negative button")
@@ -172,35 +171,6 @@ class OrderFragment : Fragment() {
             }
         }
         menuHost.addMenuProvider(provider)
-
-
-        binding.fabOrder.setOnClickListener {
-            val optionsBuilder = GmsBarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_EAN_13)
-            if (allowManualInput) {
-                optionsBuilder.allowManualInput()
-            }
-            if (enableAutoZoom) {
-                optionsBuilder.enableAutoZoom()
-            }
-            val gmsBarcodeScanner = GmsBarcodeScanning.getClient(mainActivity, optionsBuilder.build())
-            gmsBarcodeScanner
-                .startScan()
-                .addOnSuccessListener { barcode: Barcode ->
-                    when (barcode.rawValue!!.substring(0, 2)) {
-                        "27" -> // изменяем кол-во
-                        {
-                            viewModel.updateItem(barcode.rawValue!!, currentOrder.id)
-                            //if (cart.Barcode == barcode.rawValue) Toast.makeText(MAIN, "ВСЁ ОК!!!!!", Toast.LENGTH_LONG).show()
-                        }
-                        else -> Toast.makeText(mainActivity, "Штрихкод начинается не на 27!", Toast.LENGTH_LONG).show()
-                    }
-                }
-                .addOnFailureListener { e: Exception -> getErrorMessage(e) } //barcodeResultView!!.text = getErrorMessage(e) }
-                .addOnCanceledListener {
-                    //barcodeResultView!!.text = getString(R.string.error_scanner_cancelled)
-                    Toast.makeText(mainActivity, getString(R.string.error_scanner_cancelled), Toast.LENGTH_SHORT).show()
-                }
-        }
     }
 
     private fun getErrorMessage(e: Exception): String? {
@@ -224,6 +194,10 @@ class OrderFragment : Fragment() {
         menuHost.removeMenuProvider(provider)
     }
 
+    private fun onItemDelete(position: Int) {
+        viewModel.deleteItem(position, currentOrder.id)
+    }
+
     private fun onItemClick(position: Int) {
         //toast(adapter.listMain[position].Product)
         val itemsOrder = adapter.listMain[position]
@@ -238,12 +212,12 @@ class OrderFragment : Fragment() {
         dialogLayout.findViewById<TextView>(R.id.textViewAlert).text = itemsOrder.Product
         val editText  = dialogLayout.findViewById<EditText>(R.id.editTextAlert)
         builder.setView(dialogLayout)
-        builder.setPositiveButton("OK") { dialogInterface, i ->
+        builder.setPositiveButton("OK") { _, _ ->
 
-            if (editText.text.toString().dropWhile { it == ' ' }.length == 0) {
-                newCounts = oldCounts}
-            else {
-                newCounts = editText.text.toString().toInt()
+            newCounts = if (editText.text.toString().dropWhile { it == ' ' }.isEmpty()) {
+                oldCounts
+            } else {
+                editText.text.toString().toInt()
             }
 
             if (oldCounts != newCounts && newCounts != 0) {

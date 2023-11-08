@@ -22,6 +22,9 @@ interface ApiService {
     @GET("upp2018/hs/nm/carts")
     suspend fun getCarts() : Cart
 
+    @GET("upp2018/hs/nm/barcode")
+    suspend fun getBarcode(@Query("barcode") name: String) : Cart
+
     @POST("upp2018/hs/nm/order")
     suspend fun postOrder(@Query("name") name: String, @Query("number") number: String, @Body items: List<Order1C>) : Response<ResponseBody>
 

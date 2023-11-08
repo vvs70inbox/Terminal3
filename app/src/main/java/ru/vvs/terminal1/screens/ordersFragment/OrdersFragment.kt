@@ -42,7 +42,10 @@ class OrdersFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(OrdersViewModel::class.java)
 
         recyclerView = binding.ordersFragment
-        adapter = OrdersAdapter()
+        adapter = OrdersAdapter (
+            { pos -> clickOrder(viewModel.myOrdersList.value!![pos])},
+            { pos -> viewModel.deleteOrder(viewModel.myOrdersList.value!![pos]) }
+        )
         recyclerView.adapter = adapter
 
         viewModel.order.observe(viewLifecycleOwner) { } // снимаем наблюдение
@@ -76,72 +79,6 @@ class OrdersFragment : Fragment() {
                 clickOrder(order)
             }
         }
-
-        ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                //TODO Вынести в утилиты
-                val alertDialog = AlertDialog.Builder(mainActivity)
-                alertDialog.apply {
-                    setIcon(R.drawable.baseline_delete_24)
-                    setTitle("Удаление заказа")
-                    setMessage("Вы уверены, что хотите удалить выбранный заказ?")
-                    setCancelable(false)
-                    setPositiveButton("ДА") { _, _ ->
-                        //toast("clicked positive button")
-                        viewModel.swipeItem(viewModel.myOrdersList.value!!.get(viewHolder.adapterPosition) )
-                    }
-                    setNegativeButton("НЕТ") { _, _ ->
-                        //toast("clicked negative button")
-                        viewModel.getOrders(false)
-                    }
-                    //setNeutralButton("Neutral") { _, _ ->
-                    //    toast("clicked neutral button")
-                    //}
-                }.create().show()
-
-                // this method is called when we swipe our item to right direction.
-                // on below line we are getting the item at a particular position.
-                ////val deletedCourse: ItemsOrder =
-                ////viewModel.myItemsList.value!!.get(viewHolder.adapterPosition)
-                //-//courseList.get(viewHolder.adapterPosition)
-
-                // below line is to get the position
-                // of the item at that position.
-                ////val position = viewHolder.adapterPosition
-
-
-                // this method is called when item is swiped.
-                // below line is to remove item from our array list.
-                ////courseList.removeAt(viewHolder.adapterPosition)
-
-                // below line is to notify our item is removed from adapter.
-                ////adapter.notifyItemRemoved(viewHolder.adapterPosition)
-
-                // below line is to display our snackbar with action.
-                /*                Snackbar.make(recyclerView, "Deleted " + deletedCourse.Product, Snackbar.LENGTH_LONG)
-                                    .setAction(
-                                        "Undo",
-                                        View.OnClickListener {
-                                            // adding on click listener to our action of snack bar.
-                                            // below line is to add our item to array list with a position.
-                                            ////courseList.add(position, deletedCourse)
-
-                                            // below line is to notify item is
-                                            // added to our adapter class.
-                                            //adapter.notifyItemInserted(position)
-                                            Toast.makeText(MAIN, "Пробуем свайп", Toast.LENGTH_SHORT).show()
-                                        }).show()*/
-            }
-
-        }).attachToRecyclerView(recyclerView)
 
     }
 

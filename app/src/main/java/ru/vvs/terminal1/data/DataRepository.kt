@@ -30,8 +30,20 @@ class DataRepository(private val cartsDao: CartsDao) {
         }
     }
 
-    suspend fun getCartByBarcode(barcode: String): CartItem {
-        return cartsDao.getCartByBarcode(barcode)
+    // Получает товар по баркоду из базы данных или отправляет запрос
+    suspend fun getCartByBarcode(barcode: String): CartItem? {
+        if (!barcode.startsWith("27"))
+            return null;
+
+        var cartItem = cartsDao.getCartByBarcode(barcode)
+        if (cartItem == null && MainActivity.isOnline(mainActivity)) {
+            val cart = RetrofitInstance.api.getBarcode(barcode);
+            if (cart.isNotEmpty()) {
+                cartItem = cart.first()
+                cartsDao.insert(cartItem)
+            }
+        }
+        return cartItem;
     }
 
     suspend fun getCartsByProduct(product: String): List<CartItem> {

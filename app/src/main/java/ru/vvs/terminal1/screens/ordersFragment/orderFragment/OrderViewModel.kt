@@ -75,7 +75,7 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun swipeItem(position: Int, orderId: Int) {
+    fun deleteItem(position: Int, orderId: Int) {
         val itemsOrder = myItemsList.value!![position]
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteItem(itemsOrder.Barcode, orderId)
