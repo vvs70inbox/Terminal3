@@ -88,72 +88,6 @@ class OrderFragment : Fragment() {
             currentOrder.positions = list.count()
         }
 
-        ItemTouchHelper(object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-                val alertDialog = AlertDialog.Builder(mainActivity)
-
-                alertDialog.apply {
-                    setIcon(R.drawable.baseline_delete_24)
-                    setTitle("Удаление товара")
-                    setMessage("Вы уверены, что хотите удалить выбранный товар?")
-                    setCancelable(false)
-                    setPositiveButton("ДА") { _, _ ->
-                        //toast("clicked positive button")
-                        viewModel.deleteItem(viewHolder.adapterPosition, currentOrder.id)
-                    }
-                    setNegativeButton("НЕТ") { _, _ ->
-                        //toast("clicked negative button")
-                        viewModel.getItems(currentOrder.id)
-                    }
-                    //setNeutralButton("Neutral") { _, _ ->
-                    //    toast("clicked neutral button")
-                    //}
-                }.create().show()
-
-                // this method is called when we swipe our item to right direction.
-                // on below line we are getting the item at a particular position.
-                ////val deletedCourse: ItemsOrder =
-                    ////viewModel.myItemsList.value!!.get(viewHolder.adapterPosition)
-                    //-//courseList.get(viewHolder.adapterPosition)
-
-                // below line is to get the position
-                // of the item at that position.
-                ////val position = viewHolder.adapterPosition
-
-
-                // this method is called when item is swiped.
-                // below line is to remove item from our array list.
-                ////courseList.removeAt(viewHolder.adapterPosition)
-
-                // below line is to notify our item is removed from adapter.
-                ////adapter.notifyItemRemoved(viewHolder.adapterPosition)
-
-                // below line is to display our snackbar with action.
-/*                Snackbar.make(recyclerView, "Deleted " + deletedCourse.Product, Snackbar.LENGTH_LONG)
-                    .setAction(
-                        "Undo",
-                        View.OnClickListener {
-                            // adding on click listener to our action of snack bar.
-                            // below line is to add our item to array list with a position.
-                            ////courseList.add(position, deletedCourse)
-
-                            // below line is to notify item is
-                            // added to our adapter class.
-                            //adapter.notifyItemInserted(position)
-                            Toast.makeText(MAIN, "Пробуем свайп", Toast.LENGTH_SHORT).show()
-                        }).show()*/
-            }
-
-        }).attachToRecyclerView(recyclerView)
-
         menuHost = requireActivity()
         provider = object : MenuProvider {
 
@@ -171,6 +105,35 @@ class OrderFragment : Fragment() {
             }
         }
         menuHost.addMenuProvider(provider)
+
+
+        binding.fabOrder.setOnClickListener {
+            val optionsBuilder = GmsBarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_EAN_13)
+            if (allowManualInput) {
+                optionsBuilder.allowManualInput()
+            }
+            if (enableAutoZoom) {
+                optionsBuilder.enableAutoZoom()
+            }
+            val gmsBarcodeScanner = GmsBarcodeScanning.getClient(mainActivity, optionsBuilder.build())
+            gmsBarcodeScanner
+                .startScan()
+                .addOnSuccessListener { barcode: Barcode ->
+                    when (barcode.rawValue!!.substring(0, 2)) {
+                        "27" -> // изменяем кол-во
+                        {
+                            viewModel.updateItem(barcode.rawValue!!, currentOrder.id)
+                            //if (cart.Barcode == barcode.rawValue) Toast.makeText(MAIN, "ВСЁ ОК!!!!!", Toast.LENGTH_LONG).show()
+                        }
+                        else -> Toast.makeText(mainActivity, "Штрихкод начинается не на 27!", Toast.LENGTH_LONG).show()
+                    }
+                }
+                .addOnFailureListener { e: Exception -> getErrorMessage(e) } //barcodeResultView!!.text = getErrorMessage(e) }
+                .addOnCanceledListener {
+                    //barcodeResultView!!.text = getString(R.string.error_scanner_cancelled)
+                    Toast.makeText(mainActivity, getString(R.string.error_scanner_cancelled), Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     private fun getErrorMessage(e: Exception): String? {
