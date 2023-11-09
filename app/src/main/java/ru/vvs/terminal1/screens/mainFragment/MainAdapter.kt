@@ -62,7 +62,7 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
     override fun onViewAttachedToWindow(holder: MainViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.itemView.setOnClickListener {
-            MainFragment.clickMovie(listMain[holder.adapterPosition])
+            MainFragment.navigateToCart(listMain[holder.adapterPosition].Barcode)
         }
     }
 

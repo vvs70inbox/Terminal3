@@ -9,7 +9,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
@@ -22,7 +21,6 @@ import com.google.mlkit.common.MlKitException
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
-import ru.vvs.terminal1.MainActivity
 import ru.vvs.terminal1.mainActivity
 import ru.vvs.terminal1.R
 import ru.vvs.terminal1.databinding.FragmentMainBinding
@@ -102,26 +100,32 @@ class MainFragment : Fragment() {
             gmsBarcodeScanner
                 .startScan()
                 .addOnSuccessListener { barcode: Barcode ->
-                    viewModel.cartItem.observe(viewLifecycleOwner) { cart ->
-                        if (cart !=null) {
-                            when (cart.Barcode.substring(0, 2)) {
-                                "27" -> if (cart.Barcode == barcode.rawValue) clickMovie(cart)
-                                else -> Toast.makeText(
-                                    mainActivity,
-                                    "Штрихкод начинается не на 27!",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        }
-                        else
-                        {Toast.makeText(
+                    if (!barcode.rawValue.orEmpty().startsWith("27")) {
+                        Toast.makeText(
                             mainActivity,
-                            "Штрихкод не обнаружен - товара нет!",
+                            "Отсканирован неверный штрихкод!\nПопробуйте еще раз.",
                             Toast.LENGTH_LONG
-                        ).show()}
+                        ).show()
+                        return@addOnSuccessListener
                     }
+
+                    viewModel.cartItem.observe(viewLifecycleOwner) { cart ->
+                        binding.progressBar.visibility = View.GONE
+                        if (cart != null && cart.Barcode == barcode.rawValue) {
+                            navigateToCart(cart?.Barcode.orEmpty())
+                        } else {
+                            Toast.makeText(
+                                mainActivity,
+                                "Штрихкод не обнаружен - товара нет!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+
+                    binding.progressBar.visibility = View.VISIBLE
                     //поиск по barcode, возврат CartItem во ViewMidel
-                    viewModel.getCartByBarcode(barcode.rawValue!!)
+                    viewModel.getCartByBarcode(barcode.rawValue.orEmpty())
+                    //navigateToCart(barcode.rawValue.orEmpty())
                 }
                 .addOnFailureListener { e: Exception -> Log.d("MLKit",getErrorMessage(e)!!) }//barcodeResultView!!.text = getErrorMessage(e)
                 .addOnCanceledListener {
@@ -233,9 +237,9 @@ class MainFragment : Fragment() {
     }
 
     companion object {
-        fun clickMovie(cart: CartItem) {
+        fun navigateToCart(barcode: String) {
             val bundle = Bundle()
-            bundle.putSerializable("cart", cart)
+            bundle.putString("barcode", barcode)
             mainActivity.navController.navigate(R.id.action_mainFragment_to_cartFragment, bundle)
         }
     }

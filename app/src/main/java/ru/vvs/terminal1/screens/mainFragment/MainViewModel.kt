@@ -24,7 +24,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _isProgress = MutableLiveData<Boolean>(false)
     val isProgress: LiveData<Boolean> = _isProgress
 
-    var cartItem: MutableLiveData<CartItem> = MutableLiveData()
+    var cartItem: MutableLiveData<CartItem?> = MutableLiveData()
 
     init {
         val cartDao = CartsDatabase.getInstance(application).getCartsDao()

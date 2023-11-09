@@ -32,7 +32,7 @@ class CartAdapter: RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun setList(list: List<CartItem>) {
-        listMain = list.sortedBy { it.Character }
+        listMain = list.sortedBy { it.Price }
         notifyDataSetChanged()
     }
 

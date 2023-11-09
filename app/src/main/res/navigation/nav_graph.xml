@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_cartFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <argument
+            android:name="barcode"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/ordersFragment"

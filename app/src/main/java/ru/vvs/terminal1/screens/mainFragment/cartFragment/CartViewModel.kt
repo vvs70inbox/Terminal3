@@ -13,7 +13,7 @@ import ru.vvs.terminal1.model.CartItem
 
 class CartViewModel(app: Application): AndroidViewModel(app) {
 
-    private val repository: DataRepository
+    val repository: DataRepository
 
     private var _myItemsList: MutableLiveData<List<CartItem>> = MutableLiveData()
     val myItemsList: LiveData<List<CartItem>> = _myItemsList
