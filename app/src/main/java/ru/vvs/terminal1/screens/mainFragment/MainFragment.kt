@@ -129,7 +129,7 @@ class MainFragment : Fragment() {
                 }
                 .addOnFailureListener { e: Exception -> Log.d("MLKit",getErrorMessage(e)!!) }//barcodeResultView!!.text = getErrorMessage(e)
                 .addOnCanceledListener {
-                    //barcodeResultView!!.text = getString(R.string.error_scanner_cancelled)
+                    //barcodeResultView!!.text = getString(R.string.error_scanner_cancelled )
                     Toast.makeText(mainActivity, getString(R.string.error_scanner_cancelled), Toast.LENGTH_SHORT).show()
                 }
         }
@@ -143,6 +143,7 @@ class MainFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
+
                     R.id.actionSearch -> {
                         val searchView: SearchView = menuItem.actionView as SearchView
                         // below line is to call set on query text listener method.

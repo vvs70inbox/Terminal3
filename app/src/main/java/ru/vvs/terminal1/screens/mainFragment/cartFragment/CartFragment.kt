@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.vvs.terminal1.R
 import ru.vvs.terminal1.mainActivity
 import ru.vvs.terminal1.databinding.FragmentCartBinding
 import ru.vvs.terminal1.model.CartItem
@@ -56,15 +58,15 @@ class CartFragment : Fragment() {
             if (cartItem != null) {
                 viewModel.getItems(cartItem.Product)
 
-                binding.cartGroup.text = cartItem.GroupString.substringBeforeLast("/").substringAfterLast("/")
-                binding.cartName.text = cartItem.Product.substringBefore(",")
-                binding.cartNameEnglish.text = cartItem.Product.substringAfter(",").trim()
-                binding.cartCharacter.text = cartItem.Character
-                binding.cartBarcode.text = cartItem.Barcode
-                binding.cartQuantity.text = cartItem.Quantity.toString()
-                binding.cartProduction.text = cartItem.Production.toString()
-                binding.cartReserve.text = cartItem.Reserve.toString()
-                binding.cartPrice.text = cartItem.Price.toString()
+                binding.russianName.text = cartItem.Product.substringBefore(",").trim()
+                binding.latinName.text = cartItem.Product.substringAfter(",").trim()
+                binding.container.text = cartItem.PotSize
+                binding.height.text = cartItem.Height
+                binding.remainder.text = cartItem.Quantity.toString()
+                binding.price.text = "${cartItem.Price} руб."
+                binding.barcode.text = cartItem.Barcode
+                binding.history.text = cartItem.History
+                binding.description.text = cartItem.Description
                 //binding.progressBar.visibility = View.GONE
             } else {
                 Toast.makeText(

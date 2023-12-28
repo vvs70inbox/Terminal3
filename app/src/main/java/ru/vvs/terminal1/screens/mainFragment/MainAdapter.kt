@@ -27,8 +27,8 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
         // list in our course array list.
         listMain = filterlist
         // below line is to notify our adapter
-        // as change in recycler view data.
         notifyDataSetChanged()
+        // as change in recycler view data.
     }
     fun filterRemove() {
         // below line is to add our filtered
@@ -44,12 +44,15 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        holder.itemView.findViewById<TextView>(R.id.item_name).text = listMain[position].GroupString.substringAfter("/")
-        holder.itemView.findViewById<TextView>(R.id.item_buy).text = listMain[position].Product.substringBefore(",")
-        holder.itemView.findViewById<TextView>(R.id.item_english).text = listMain[position].Product.substringAfter(",").trim()
-        holder.itemView.findViewById<TextView>(R.id.item_character).text = listMain[position].Character
-        holder.itemView.findViewById<TextView>(R.id.item_count).text = listMain[position].Quantity.toString()
-        holder.itemView.findViewById<TextView>(R.id.item_price).text = listMain[position].Price.toString()
+        //holder.itemView.findViewById<TextView>(R.id.item_name).text = listMain[position].GroupString.substringAfter("/")
+        holder.itemView.findViewById<TextView>(R.id.russian_name).text = listMain[position].Product.substringBefore(",").trim()
+        holder.itemView.findViewById<TextView>(R.id.latin_name).text = listMain[position].Product.substringAfter(",").trim()
+        holder.itemView.findViewById<TextView>(R.id.container).text = listMain[position].PotSize
+        holder.itemView.findViewById<TextView>(R.id.height).text = listMain[position].Height
+        holder.itemView.findViewById<TextView>(R.id.remainder).text = listMain[position].Quantity.toString()
+        holder.itemView.findViewById<TextView>(R.id.price).text = "${listMain[position].Price} руб."
+        holder.itemView.findViewById<TextView>(R.id.barcode).text = listMain[position].Barcode
+        holder.itemView.findViewById<TextView>(R.id.history).text = listMain[position].History
     }
 
     @SuppressLint("NotifyDataSetChanged")

@@ -24,10 +24,12 @@ class CartAdapter: RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
-        holder.itemView.findViewById<TextView>(R.id.item_character_cart).text = listMain[position].Character
-        holder.itemView.findViewById<TextView>(R.id.item_barcode_cart).text = listMain[position].Barcode
-        holder.itemView.findViewById<TextView>(R.id.item_count_cart).text = listMain[position].Quantity.toString()
-        holder.itemView.findViewById<TextView>(R.id.item_price_cart).text = listMain[position].Price.toString()
+        holder.itemView.findViewById<TextView>(R.id.container).text = listMain[position].PotSize
+        holder.itemView.findViewById<TextView>(R.id.height).text = listMain[position].Height
+        holder.itemView.findViewById<TextView>(R.id.remainder).text = listMain[position].Quantity.toString()
+        holder.itemView.findViewById<TextView>(R.id.price).text = "${listMain[position].Price} руб."
+        holder.itemView.findViewById<TextView>(R.id.barcode).text = listMain[position].Barcode
+        holder.itemView.findViewById<TextView>(R.id.history).text = listMain[position].History
     }
 
     @SuppressLint("NotifyDataSetChanged")
