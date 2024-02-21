@@ -4,30 +4,26 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import ru.vvs.terminal1.data.room.dao.CartsDao
-import ru.vvs.terminal1.data.room.dao.DaoItemsOrder
-import ru.vvs.terminal1.data.room.dao.DaoItemsSale
-import ru.vvs.terminal1.data.room.dao.OrdersDao
-import ru.vvs.terminal1.data.room.dao.OrdersItemDao
-import ru.vvs.terminal1.data.room.dao.SalesDao
-import ru.vvs.terminal1.data.room.dao.SalesItemDao
-import ru.vvs.terminal1.model.CartItem
-import ru.vvs.terminal1.model.ItemsOrder
+import androidx.room.TypeConverter
 import ru.vvs.terminal1.model.Order
+import ru.vvs.terminal1.model.OrderDao
 import ru.vvs.terminal1.model.OrderItem
-import ru.vvs.terminal1.model.Sale
-import ru.vvs.terminal1.model.SaleItem
+import ru.vvs.terminal1.model.OrderItemDao
+import ru.vvs.terminal1.model.Product
+import ru.vvs.terminal1.model.ProductDao
+import java.sql.Timestamp
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.util.TimeZone
 
-@Database(entities = [CartItem::class,Order::class,OrderItem::class, Sale::class, SaleItem::class], version = 7)
+@Database(entities = [Product::class, Order::class, OrderItem::class], version = 8)
 abstract class CartsDatabase: RoomDatabase() {
 
-    abstract fun getCartsDao(): CartsDao
-    abstract fun getOrdersDao(): OrdersDao
-    abstract fun getSalesDao(): SalesDao
-    abstract fun getSalesItemDao(): SalesItemDao
-    abstract fun getAllOrdersItem(): OrdersItemDao
-    abstract fun getAllItemsFromOrder(): DaoItemsOrder
-    abstract fun getAllItemsFromSale(): DaoItemsSale
+    abstract fun getProductDao(): ProductDao
+    abstract fun getOrderDao(): OrderDao
+    abstract fun getOrderItemDao(): OrderItemDao
 
     companion object {
         @Volatile
@@ -37,6 +33,7 @@ abstract class CartsDatabase: RoomDatabase() {
             return  if (database == null) {
                 database = Room
                     .databaseBuilder(context, CartsDatabase::class.java, "db_terminal")
+                    .addTypeConverter(Converters::class.java)
                     .fallbackToDestructiveMigration()
                     .build()
                 database as CartsDatabase
@@ -44,5 +41,17 @@ abstract class CartsDatabase: RoomDatabase() {
                 database as CartsDatabase
             }
         }
+    }
+}
+
+class Converters {
+    @TypeConverter
+    fun fromTimestamp(value: Long?): LocalDateTime? {
+        return value?.let { LocalDateTime.ofInstant(Instant.ofEpochSecond(value), TimeZone.getDefault().toZoneId()) }
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: LocalDateTime?): Long? {
+        return date?.toEpochSecond(ZoneOffset.UTC)
     }
 }

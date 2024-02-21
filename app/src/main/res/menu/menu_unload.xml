@@ -7,7 +7,8 @@
     <item
         android:id="@+id/actionUnload"
         android:icon="@drawable/baseline_cloud_upload_24"
+        android:iconTint="#FFFFFF"
         android:title="Unload"
-        app:showAsAction="ifRoom|collapseActionView"/>
+        app:showAsAction="ifRoom|collapseActionView" />
 
 </menu>

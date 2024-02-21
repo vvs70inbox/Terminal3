@@ -7,14 +7,17 @@
     <item
         android:id="@+id/actionSearch"
         android:icon="@android:drawable/ic_menu_search"
+        android:iconTint="#FFFFFF"
+        android:iconTintMode="src_atop"
         android:title="Search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView"/>
+        app:showAsAction="ifRoom|collapseActionView" />
 
     <item
         android:id="@+id/actionUpdate"
         android:icon="@drawable/baseline_browser_updated_24"
+        android:iconTint="#FFFFFF"
         android:title="Update"
-        app:showAsAction="ifRoom|collapseActionView"/>
+        app:showAsAction="ifRoom|collapseActionView" />
 
 </menu>

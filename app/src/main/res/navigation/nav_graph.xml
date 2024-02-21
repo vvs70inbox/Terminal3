@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="ru.vvs.terminal1.screens.mainFragment.MainFragment"
+        android:name="ru.vvs.terminal1.screens.productListScreen.ProductListFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
-        android:name="ru.vvs.terminal1.screens.mainFragment.cartFragment.CartFragment"
+        android:name="ru.vvs.terminal1.screens.productScreen.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" >
         <action
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/ordersFragment"
-        android:name="ru.vvs.terminal1.screens.ordersFragment.OrdersFragment"
+        android:name="ru.vvs.terminal1.screens.orderListScreen.OrdersFragment"
         android:label="fragment_orders"
         tools:layout="@layout/fragment_orders" >
         <action
@@ -58,7 +58,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderFragment"
-        android:name="ru.vvs.terminal1.screens.ordersFragment.orderFragment.OrderFragment"
+        android:name="ru.vvs.terminal1.screens.orderViewScreen.OrderViewFragment"
         android:label="fragment_order"
         tools:layout="@layout/fragment_order" >
         <action
@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/saleFragment"
-        android:name="ru.vvs.terminal1.screens.salesFragment.saleFragment.SaleFragment"
+        android:name="ru.vvs.terminal1.screens.saleFragment.SaleFragment"
         android:label="SaleFragment" >
         <action
             android:id="@+id/action_saleFragment_to_salesFragment"

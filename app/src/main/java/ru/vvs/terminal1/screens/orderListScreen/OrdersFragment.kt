@@ -1,0 +1,97 @@
+package ru.vvs.terminal1.screens.orderListScreen
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
+import ru.vvs.terminal1.mainActivity
+import ru.vvs.terminal1.R
+import ru.vvs.terminal1.databinding.FragmentOrdersBinding
+import ru.vvs.terminal1.model.Order
+
+class OrdersFragment : Fragment() {
+
+    private var mBinding: FragmentOrdersBinding?= null
+    private val binding get() = mBinding!!
+
+    private lateinit var viewModel: OrdersViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: OrdersAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mBinding = FragmentOrdersBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+    }
+
+    private fun init() {
+        mainActivity.actionBar.title = "Работа с заказами"
+        viewModel = ViewModelProvider(this).get(OrdersViewModel::class.java)
+
+        recyclerView = binding.ordersFragment
+        adapter = OrdersAdapter (
+            { pos -> clickOrder(viewModel.orderList.value!![pos])},
+            { pos -> viewModel.deleteOrder(viewModel.orderList.value!![pos]) }
+        )
+        recyclerView.adapter = adapter
+
+        viewModel.selectedOrder.observe(viewLifecycleOwner) { } // снимаем наблюдение
+        viewModel.selectedOrder = MutableLiveData()
+
+        viewModel.isProgress.observe(viewLifecycleOwner) { bool ->
+            when(bool) {
+                true -> {
+                    binding.progressBarOrders.visibility = View.VISIBLE
+                    binding.fabOrders.visibility = View.INVISIBLE
+
+                }
+                else -> {
+                    binding.progressBarOrders.visibility = View.GONE
+                    binding.fabOrders.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        if (viewModel.orderList.value == null) {
+            viewModel.getOrders()
+        }
+
+        viewModel.orderList.observe(viewLifecycleOwner) { list ->
+            adapter.setList(list)
+        }
+
+        binding.fabOrders.setOnClickListener {
+            viewModel.newOrder()
+            viewModel.selectedOrder.observe(viewLifecycleOwner) { order ->
+                clickOrder(order)
+            }
+        }
+
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mBinding = null
+    }
+
+    companion object {
+        fun clickOrder(order: Order) {
+            val bundle = Bundle()
+            bundle.putSerializable("order", order)
+            mainActivity.navController.navigate(R.id.action_ordersFragment_to_orderFragment, bundle)
+        }
+    }
+
+}

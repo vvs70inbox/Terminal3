@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
-    tools:context=".screens.salesFragment.saleFragment.SaleFragment">
+    tools:context=".screens.saleFragment.SaleFragment">
 
     <TextView
         android:id="@+id/saleNumberTitle"

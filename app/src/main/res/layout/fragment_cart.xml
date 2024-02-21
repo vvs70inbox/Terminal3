@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        tools:context=".screens.mainFragment.cartFragment.CartFragment">
+        tools:context=".screens.productScreen.CartFragment">
 
         <TextView
             android:id="@+id/barcode"
