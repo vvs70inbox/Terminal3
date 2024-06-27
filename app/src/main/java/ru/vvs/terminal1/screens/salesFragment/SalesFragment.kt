@@ -91,6 +91,7 @@ class SalesFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 this,
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
             ).show()
+
 /*            viewModel.newSale()
             viewModel.order.observe(viewLifecycleOwner) {order ->
                 OrdersFragment.clickOrder(order)
@@ -131,7 +132,7 @@ class SalesFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         calendar.set(year, month, dayOfMonth)
         //Toast.makeText(mainActivity,formatter.format(calendar.timeInMillis),Toast.LENGTH_LONG).show()
-        viewModel.choiceSale(formatter.format(calendar.timeInMillis))
+        viewModel.choiceSale(formatter.format(calendar.timeInMillis)+"000000")
     }
 
     companion object {

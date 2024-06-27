@@ -43,15 +43,16 @@ class SalesViewModel(application: Application): AndroidViewModel(application) {
     }
 
     fun choiceSale(format: String) {
-
+        //Toast.makeText(mainActivity,format,Toast.LENGTH_LONG).show()
         viewModelScope.launch(Dispatchers.IO) {
             val newSales = RetrofitInstance.api.getSales(format)?: return@launch
             var newSalesSting: Array<String> = emptyArray()
             for (item in newSales) {
                 newSalesSting += item.toString()
             }
+            //Toast.makeText(mainActivity,format + newSales.size.toString(),Toast.LENGTH_LONG).show()
+
             withContext(Dispatchers.Main) {
-                //Toast.makeText(mainActivity,format + newSales.size.toString(),Toast.LENGTH_LONG).show()
                 val builder = AlertDialog.Builder(mainActivity)
                 builder.setTitle("Выберите заказ")
                     .setItems(
@@ -68,10 +69,10 @@ class SalesViewModel(application: Application): AndroidViewModel(application) {
     fun newSaleRecord(item: SaleImportItem) {
         //Toast.makeText(mainActivity, "Выбранный заказ: ${item.numberSale}", Toast.LENGTH_SHORT).show()
         viewModelScope.launch(Dispatchers.IO) {
-            val newSaleItems = RetrofitInstance.api.getSaleItems(item.numberSale, item.dateSale.substring(0..3))
+            val newSaleItems = RetrofitInstance.api.getSaleItems(item.numberSale, item.dateSale) //.substring(0..3))
             if (newSaleItems.size > 0) {
                 // проверка на существование
-                if (repository.getSaleByNumberAndDate(item.numberSale, item.dateSale.substring(0 until 4))) {
+                if (repository.getSaleByNumberAndDate(item.numberSale, item.dateSale)) {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(mainActivity, "Выбран заказ, который есть в базе!!! Нужно сначала удалить.", Toast.LENGTH_SHORT).show()
                     }

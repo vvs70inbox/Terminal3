@@ -26,7 +26,7 @@ class SaleAdapter(private val onItemClick: (position: Int) -> Unit): RecyclerVie
     }
 
     override fun onBindViewHolder(holder: SaleViewHolder, position: Int) {
-        holder.itemView.findViewById<TextView>(R.id.item_product_sale).text = listMain[position].Product
+        holder.itemView.findViewById<TextView>(R.id.item_product_sale).text = listMain[position].Product.substringBefore(',')
         holder.itemView.findViewById<TextView>(R.id.item_character_sale).text = listMain[position].Character
         holder.itemView.findViewById<TextView>(R.id.item_barcode_sale).text = listMain[position].Barcode
         holder.itemView.findViewById<TextView>(R.id.item_price_sale).text = listMain[position].Price.toString()
